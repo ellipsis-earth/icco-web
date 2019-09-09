@@ -1,0 +1,107 @@
+.app-container {
+  position: relative;
+  height: auto;
+  overflow: visible;
+  padding-bottom: 30px;
+}
+
+.apps-table {
+  display: table;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  border-spacing: 60px 10px;
+  border-collapse: separate;
+}
+
+.apps-table-full {
+  width: 100%;
+  border-spacing: 10px 10px;
+}
+
+.app-container-sub {
+  height: auto;
+}
+
+.app-button {
+  width: 50%;
+  padding: 40px;
+}
+
+.app-button-label {
+  font-size: 24px;
+  color: #026464;
+}
+
+.app-text-block {
+  width: calc(100% - 360px);
+  font-size: 16px;
+  vertical-align: top;
+  text-align: left;
+}
+
+a.app-text-button {
+  display: block;
+  width: 50%;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+a.app-text-button:nth-of-type(2) {
+  margin-bottom: 24px;
+}
+
+.app-text-button-icon {
+  margin-left: 6px;
+}
+
+.app-iframe-block {
+  width: 360px;
+  height: 640px;
+}
+
+.app-iframe {
+  width: 100%;
+  height: 100%;
+  border-width: 0px;
+}
+
+div.gallery-loading-spinner {
+  top: calc(50% - 40px);
+  left: calc(50% - 40px);
+}
+
+@media only screen and (max-device-width : 640px) {
+  .apps-table {
+    width: 90%;
+    margin-bottom: 10px;
+    border-spacing: 10px 5px;
+    border-collapse: separate;
+  }
+
+  .app-button {
+    display: inline-block;
+    padding: 5px;
+  }
+
+  .app-button-label {
+    font-size: 16px;
+  }
+
+  .apps-table-full {
+    display: block;
+  }
+
+  .app-text-block {
+    width: 100%;
+    display: inline-block;
+  }
+
+  a.app-text-button {
+    width: 70%;
+    margin: 8px auto;
+  }
+
+  .app-iframe-block {
+    display: none;
+  }
+}

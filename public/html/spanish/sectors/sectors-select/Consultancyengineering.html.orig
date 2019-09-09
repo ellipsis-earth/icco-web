@@ -1,0 +1,72 @@
+<div className="main-block-content main-block-content-left">
+	<h1>Consultoría e Ingeniería</h1>
+	<h2>Nuestro servicio</h2>
+	<p>
+		Ellipsis digitaliza y automatiza el monitoreo de las condiciones de cobertura del suelo, la dinámica de las aguas superficiales y los elementos del paisaje.
+	</p>
+	<p>
+    Al proporcionar información automática y casi en tiempo real sobre el estado y los cambios en la dinámica de la tierra y el agua, generamos geoestadísticas y geoinformación rentables en tiempo real. Esta información puede ser utilizada para informar sobre la gestión del proyecto, la planificación, las evaluaciones de riesgos, los controles de cumplimiento, las mediciones de impacto y el asesoramiento personalizado.
+	</p>
+	<ul>
+		<li>
+        Hacemos un inventario detallado de los tipos de cobertura del suelo y de la dinámica del paisaje a cualquier escala, tanto histórica como casi en tiempo real.
+		</li>
+		<li>
+			Monitoreamos los KPIS relacionados con el paisaje, las banderas rojas y el (no) cumplimiento.
+		</li>
+		<li>
+			Agrupamos los conocimientos a niveles significativos y los escribimos en una base de datos ubicada en la nube que puede ser consultada externamente.
+		</li>
+	</ul>
+</div>
+
+<div className="main-block-content main-block-content-left">
+	<p>
+    La información se deposita en una base de datos auto-actualizada que se puede consultar externamente a través de nuestra API. Como tal, puede conectar este nuevo flujo de datos a sistemas de información (preexistentes), modelos, plataformas o cualquier otra aplicación. La forma en que usted elige integrar la información proporcionada, y con quién decide compartirla, es completamente flexible. Estamos siempre a su disposición para asesorarle!
+	</p>
+	<a href="/products/tutorial" className="button  main-block-triple-button product-double-button">
+		Tutorial
+	</a>
+	<a href="/gallery" className="button  main-block-triple-button product-double-button">
+		Gallería
+	</a>
+<<<<<<< HEAD
+	<a href="/viewer" className="button  main-block-triple-button product-double-button">
+		Visor
+	</a>
+=======
+>>>>>>> daniel-development
+</div>
+
+<div className="main-block main-block-first main-block-accented product-block-accented">
+	<div className="main-block-content main-block-content-left">
+		<h2>Información en la que puede confiar</h2>
+		<p>
+      Somos 100% transparentes en nuestro proceso de análisis y en nuestros modelos, que siempre se someten a pruebas objetivas de precisión. Creemos en la automatización, pero también en el toque humano. Por lo tanto, nuestro proceso de análisis le permite rastrear cualquier conclusión cuando surge la necesidad.
+		</p>
+	</div>
+</div>
+
+<div className="main-block-content main-block-content-left">
+	<h2>Contáctenos</h2>
+	<p>
+		Contáctenos para solicitar una cotización o conocer más sobre el potencial para su organización.<br>
+	</p>
+</div>
+<a href="mailto:info@ellipsis-earth.com" className="button " target="_blank">info@ellipsis-earth.com</a>
+
+<div className="main-block main-block-first main-block-accented product-block-accented">
+	<div className="main-block-content main-block-content-left">
+		<h2>¿Por qué Ellipsis?</h2>
+		<h3>Monitoreo innovador con tecnología de punta.</h3>
+		<p>
+			Si bien los datos satelitales existen desde hace tiempo y muchas organizaciones los utilizan, el uso fiable, continuo y de bajo umbral por parte de los no expertos siempre se ha quedado atrás. En gran parte, esto se debe a la incapacidad de los proveedores para automatizar completamente el proceso de análisis y entrega de forma fiable y asequible.
+		</p>
+		<p>
+			Como empresa con experiencia en TI y IA, utilizamos una línea de análisis progresivo y flexible para proporcionar información sobre una gran variedad de dinámicas y condiciones del paisaje, en cualquier parte del mundo, de forma uniforme. Somos líderes en el aprovechamiento de los desarrollos más recientes en software de IA y computación en nube, realizando análisis basados en visión computarizada que superan a los modelos de codificados al tener en cuenta todos los patrones de datos.
+		</p>
+		<p>
+			Como empresa, nuestro principal objetivo es poner a disposición los conocimientos adecuados como si se tratara de una empresa de servicios públicos. Tan fácil como el agua de un grifo. Nuestros métodos benefician a los usuarios en cuanto a la facilidad de uso, calidad y asequibilidad.
+		</p>
+	</div>
+</div>

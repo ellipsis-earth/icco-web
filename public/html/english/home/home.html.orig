@@ -1,0 +1,187 @@
+<div className="main-block main-block-first">
+  <div className="main-block-content">
+    <p className="main-center-paragraph">
+      We share the planet with an increasing number of people.
+      Consequently, pressure on land grows and every square kilometer needs to
+      become more productive and more sustainably managed.
+    </p>
+    <p className="main-center-paragraph">
+      At Ellipsis we believe that actionable information on landscape dynamics
+      helps you make more effective use of available resources.
+      By focusing efforts on high risk and high opportunity developments,
+      we can help you achieve more productive, compliant, and sustainable land use.
+    </p>
+  </div>
+</div>
+
+<div className="main-block main-block-accented">
+  <div className="main-block-header">
+    Our Solution
+  </div>
+  <div className="main-block-content">
+    <p className="main-center-paragraph">
+      Ellipsis Earth Intelligence provides a subscription based information service on landscape dynamics. We are connected to a large variety of Earth observation satellite constellations and other data sources. With our unique computing cluster we can request, analyse, and store this data in a
+      fully scalable and automated fashion. This way we can get you access to the highly up to date information you need.
+      <br/>
+      <br/>
+      The information we acquire is always tailored to client specifications and can be gathered on any scale. From your backyard, to your entire continent. From once a year, to every day.
+    </p>
+  </div>
+
+</div>
+
+<div className="main-block">
+  <div className="main-block-header">
+      Our product
+  </div>
+  <div className="main-block-content">
+    <p className="main-center-paragraph">
+      Our core product is a flexible and easy to use API, that outputs the for our clients relevant tabular, geometric and visual information. Since we believe both in automation and the human touch, the API includes an elaborate geo-referenced chat service to further enrich the acquired data.
+      <br/>
+      <br/>
+      With this readily available API you can start doing your own analysis or develop neat applications. In case your organisation lacks a data science or development team we can also build and host dedicated applications and monitoring services for you within the Ellipsis framework.
+    </p>
+    <a href="/products" className="button-a">
+      <div className="button  main-block-single-button">
+        Products
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<div className="main-block">
+
+
+<div className="main-block main-block-accented">
+  <div className="main-block-header">
+    Explore
+  </div>
+  <div className="main-block-content">
+<<<<<<< HEAD
+    <p>
+      Take a look at our public maps to get a sense of what information we can extract for you.
+    </p>
+    <a href="/viewer" className="button-a">
+      <div className="button  main-block-single-button">
+        Viewer
+      </div>
+    </a>
+    </br>
+    <p>
+    Or take a look at the Gallery to see specific solutions for a variety of use cases, all build within the Ellipsis framework.
+=======
+    Take a look at the Gallery to see solutions for a variety of use cases, all build on the Ellipsis API.
+>>>>>>> daniel-development
+  </p>
+    <a href="/gallery" className="button-a">
+      <div className="button  main-block-single-button">
+        Gallery
+      </div>
+    </a>
+  </div>
+</div>
+<div className="main-block">
+  <div className="main-block-header">
+    Sectors
+  </div>
+  <div className="main-block-content">
+    <p className="main-center-paragraph">
+      Information on landscape conditions and dynamics is valuable for various fields and purposes. Find out what we can do for your sector.
+    </p>
+    <a href="/sectors" className="button-a">
+      <div className="button  main-block-single-button">
+        Sectors
+      </div>
+    </a>
+  </div>
+</div>
+
+<div className="main-block main-block-accented">
+  <div className="main-block-header">
+      Getting Started
+  </div>
+  <div className="main-block-content">
+    <p className="main-center-paragraph">
+      Get your monitoring system online in 5 steps:
+    </p>
+    <ol className="main-block-content-list">
+      <li className="main-block-content-list-item">
+        Together we explore your monitoring challenge and pinpoint which landscape based KPIs, requirements,
+        and/or restrictions need to be monitored.
+      </li>
+      <li className="main-block-content-list-item">
+        Together we establish meaningful aggregation levels and geometries.
+      </li>
+      <li className="main-block-content-list-item">
+        We build and assemble the necessary (AI) models to automatically conduct the required analysis.
+      </li>
+      <li className="main-block-content-list-item">
+        We launch the models in our cluster and start to automatically construct and save the requested information on a running basis.
+      </li>
+      <li className="main-block-content-list-item">
+        Connect with this new data source and get notified on the relevant developments of your choosing. Enrich the system with human input as you go.
+      </li>
+    </ol>
+  </div>
+
+  <a href="mailto:info@ellipsis-earth.com" className="button-a">
+    <div className="button  main-block-single-button">
+      Contact us
+    </div>
+  </a>
+
+  </div>
+
+
+
+
+
+  <div className="main-block-header">
+      Featured
+  </div>
+  <div className="main-block-content featured-content">
+    <div className="featured-container">
+      <div className="featured-div" title="Wageningen University & Research">
+        <span className="helper"></span>
+        <img style='width:60%' src="/images/wur.png" alt="Wageningen University & Research"/>
+      </div>
+      <div className="featured-div" title="International Union for Convervation of Nature">
+        <span className="helper"></span>
+        <img style='width: 92%' src="/images/iucn.jpg" alt="International Union for Convervation of Nature"/>
+      </div>
+      <div className="featured-div" title="Dutch Ministry of Agriculture, Nature and Food Quality">
+        <span className="helper"></span>
+        <img style='width: 92%' src="/images/lnv.png" alt="Dutch Ministry of Agriculture, Nature and Food Quality"/>
+      </div>
+    </div>
+    <div className="featured-container">
+      <div className="featured-div" title="European Space Agency">
+        <span className="helper"></span>
+        <img style='width: 95%' src="/images/ESA.png" alt="European Space Agency"/>
+      </div>
+      <div className="featured-div" title="ICCO Cooperation">
+        <span className="helper"></span>
+        <img style='width: 50%' src="/images/ICCO.png" alt="ICCO Cooperation"/>
+      </div>
+      <div className="featured-div" title="SentinelHub">
+        <span className="helper"></span>
+        <img style='width: 92%; margin-top: -10px' src="/images/SentinelHub.png" alt="SentinelHub"/>
+      </div>
+    </div>
+    <div className="featured-container">
+      <div className="featured-div" title="World Wide Fund for Nature">
+        <span className="helper"></span>
+        <img style='width: 35%; margin-top: -10px' src="/images/wwf.png" alt="World Wide Fund for Nature"/>
+      </div>
+      <div className="featured-div" title="PBL Netherlands Environmental Assessment Agency">
+        <span className="helper"></span>
+        <img style='width: 95%' src="/images/PBL.png" alt="PBL Netherlands Environmental Assessment Agency"/>
+      </div>
+      <div className="featured-div" title="Royal Haskoning DHV">
+        <span className="helper"></span>
+        <img style='width: 92%; margin-top: -10px' src="/images/rhdhv.jpg" alt="Royal Haskoning DHV"/>
+      </div>
+    </div>
+  </div>
+</div>

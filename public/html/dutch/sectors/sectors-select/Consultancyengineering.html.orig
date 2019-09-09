@@ -1,0 +1,71 @@
+<div className="main-block-content main-block-content-left">
+	<h2>Onze service</h2>
+	<p>
+		Ellipsis digitaliseert en automatiseert monitoring van land, oppervlakte water en landschap elementen.
+	</p>
+	<p>
+		Door onze geautomatiseerde near real-time service over de status van en/of veranderingen in het landschap genereren we tijd en kosten efficiënte informatie. Deze informatie kan gebruikt worden voor project planning, compliance checks, risico analyses, impact analyses en op maat advies.
+	</p>
+	<ul>
+		<li>
+			We bekijken in detail land bedekking en dynamica op elke schaal. Zowel historisch als in near real-time.
+		</li>
+		<li>
+			We monitoren landschap gerelateerde KPI's, rode vlaggen en compliance.
+		</li>
+		<li>
+			We aggregeren inzichten tot relevante niveaus en schrijven dit weg naar via API bevraagbare database in de cloud.
+		</li>
+	</ul>
+</div>
+
+<div className="main-block-content main-block-content-left">
+	<p>
+		De informatie wordt opgeslagen in een self-updating database. Via de API heeft u als organisatie hiermee streaming toegang tot de nieuwste informatie. U kunt dit inzetten voor uw modellen, platforms, applicaties of primaire processen.
+	</p>
+	<a href="/products/tutorial" className="button  main-block-triple-button product-double-button">
+		Tutorial
+	</a>
+	<a href="/gallery" className="button  main-block-triple-button product-double-button">
+		Gallerij
+	</a>
+<<<<<<< HEAD
+	<a href="/viewer" className="button  main-block-triple-button product-double-button">
+		Viewer
+	</a>
+=======
+>>>>>>> daniel-development
+</div>
+
+<div className="main-block main-block-first main-block-accented product-block-accented">
+	<div className="main-block-content main-block-content-left">
+		<h2>Informatie waarop u kunt bouwen</h2>
+		<p>
+			We zijn volledig transparant over ons inwinning en verwerking proces. Onze modellen worden altijd uitvoerig objectief op kwaliteit getest. We geloven in automatisering maar ook in de menselijke  hand. Iedere getrokken conlusie kan daarom eenvoudig door gebruikers worden nagegaan.
+		</p>
+	</div>
+</div>
+
+<div className="main-block-content main-block-content-left">
+	<h2>Contact</h2>
+	<p>
+		Neem gerust contact op voor vragen of een offerte.
+	</p>
+</div>
+<a href="mailto:info@ellipsis-earth.com" className="button " target="_blank">info@ellipsis-earth.com</a>
+
+<div className="main-block main-block-first main-block-accented product-block-accented">
+	<div className="main-block-content main-block-content-left">
+		<h2>Waarom Ellipsis?</h2>
+		<h3>State of the art monitoring.</h3>
+		<p>
+			Satelliet data is al lange tijd beschikbaar en veel organisaties maken er gebruik van. De integratie van deze informatie in standaard processen en het gebruik door de leek loopt ver achter. Met name doordat informatie zelden als betaalbare en betrouwbare lange termijn service is ingericht.
+		</p>
+		<p>
+			Als bedrijf met een expertise in IT en AI  gebruiken we een schaalbaar en modulaire pipeline om in deze behoefte te voorzien. We ondersteunen een grote variatie aan monitoring projecten op uniforme wijze. We lopen voorop in de meest recente ontwikkelingen binnen AI software en cloud computing.
+		</p>
+		<p>
+			Het is onze focus om inzichten als service beschikbaar te stellen. Zo eenvoudig als water uit de kraan. Onze methode onderscheid zich door zijn eenvoud in gebruik, betaalbaarheid en kwaliteit.
+		</p>
+	</div>
+</div>

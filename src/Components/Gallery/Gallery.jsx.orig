@@ -1,0 +1,183 @@
+import React, { Component } from 'react';
+import { NavLink, Route } from 'react-router-dom';
+import { 
+  Button,
+  IconButton,
+  CircularProgress,
+} from '@material-ui/core';
+import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
+
+import Carousel from 'react-bootstrap/Carousel';
+
+import GalleryApps from './Apps/Apps';
+import GalleryAnalysis from './Analysis/Analysis';
+import { Footer } from '../Footer/Footer';
+
+import './Gallery.css';
+
+export class Gallery extends Component {
+
+  appsComponent = null;
+
+  constructor(props) {
+    super(props);
+
+    this.appsComponent = React.createRef();
+
+    this.state = {
+      mode: 0
+    };
+  }
+
+  onMonitoringServiceChange = e => {
+    let itemValue = e.target.value;
+    let contentUrl = '/markdown/' + itemValue + '.md';
+    this.setState({ galleryItemUrl : contentUrl });
+  }
+
+<<<<<<< HEAD
+  onAppClick = (appIndex) => {
+    if (this.state.appIndex === appIndex) {
+      return;
+    }
+=======
+  render() {
+    return (
+      <div>
+        <div className="main-block-header">
+          <h1>{this.props.localization["gallery"]}</h1>
+        </div>
+        <div className="main-block main-block-first product-block-first">
+          <LoadUpdateUtil
+            contentUrl={'/html/' + this.props.language + '/gallery/gallery.html'}
+          />
+        </div>
+        <div className="main-block">
+          <div className="main-block-content main-block-content-left">
+          <h1>{this.props.localization['Apps']}</h1>
+          <div>
+            <h2>WNF Biodiversiteit app</h2>
+            <embed src="https://biodiversiteit.ellipsis-earth.com" width="100%" height="500px"/>
+            <a href="https://github.com/ellipsis-earth/biodiversiteit-web" target="_blank" className="button-a">
+              <div className="button button-accented main-block-single-button">
+                Source code
+              </div>
+            </a>
+          </div>
+          <div>
+            <h2>Ellipsis Viewer</h2>
+            <embed src="https://ellipsis-earth.com/viewer?map=Gran%20Chaco&hideMenu=1" width="100%" height="500px"/>
+            <a href="https://github.com/ellipsis-earth/ellipsis-web" target="_blank" className="button-a">
+              <div className="button button-accented main-block-single-button">
+                Source code
+              </div>
+            </a>
+          </div>
+>>>>>>> daniel-development
+
+    this.appsComponent.current.setAppIndex(appIndex);
+
+    this.setState({ mode: 0 });
+  }
+
+  onModeClick = (mode) => {
+    if (this.state.mode !== mode) {
+      this.setState({ mode: mode });
+    }
+  }
+
+  onAppLoad = () => {
+    this.setState({ loading: false });
+  }
+
+  render() {
+    return (
+      <div>
+        <div className='main-content'>
+          <div className='gallery-carousel-container noselect'>        
+            <Carousel
+              interval={10000}
+              pauseOnHover={false}
+              nextIcon={
+                <IconButton disableRipple={true}>
+                  <NavigateNextIcon style={{ fontSize: '64px' }}/>
+                </IconButton>
+              }
+              prevIcon={
+                <IconButton disableRipple={true}>
+                  <NavigateBeforeIcon style={{ fontSize: '64px' }}/>
+                </IconButton>
+              }
+            >
+              <Carousel.Item>
+                <img
+                  className='clickable'
+                  src='/images/wwf-gallery.jpg'
+                  onClick={() => this.onAppClick(1)}
+                />
+              </Carousel.Item>
+              <Carousel.Item>
+                <img
+                  className='clickable'
+                  src='/images/guyra-gallery.jpg'
+                />
+              </Carousel.Item>
+              <Carousel.Item>
+                <img
+                  className='clickable'
+                  src='/images/icco-gallery.jpg'
+                />
+              </Carousel.Item>
+            </Carousel>
+          </div>
+
+          <div className='main-block main-block-content main-block-content-left'>
+            <p className='main-center-paragraph main-center-paragraph-first'>
+              Explore apps and analysis scripts demonstrating powerful use cases based only on the Ellipsis API
+            </p>
+
+            <div className='button-double-container'>
+              <Button
+                className='gallery-mode-button button-double noselect'
+                variant={ this.state.mode === 0 ? 'contained' : 'outlined' }
+                color='primary'
+                onClick={() => this.onModeClick(0)}
+              >
+                Apps
+              </Button>
+              <Button
+                className='gallery-mode-button button-double'
+                variant={ this.state.mode === 1 ? 'contained' : 'outlined' }                
+                color='primary'
+                onClick={() => this.onModeClick(1)}
+              >
+                Analysis
+              </Button>
+            </div>
+
+            <div className='gallery-mode-container'>
+              {
+                this.state.mode === 0 ? 
+                  <GalleryApps 
+                    ref={this.appsComponent} 
+                    localization={this.props.localization}
+                  /> : null
+              }
+              {
+                this.state.mode === 1 ? 
+                  <GalleryAnalysis
+                    localization={this.props.localization}
+                  /> : null
+              }     
+            </div>
+            
+          </div>
+        </div>
+        <Footer></Footer>
+      </div>
+    )
+  }
+}
+
+export default Gallery;

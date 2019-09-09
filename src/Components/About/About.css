@@ -1,0 +1,48 @@
+div.about-us-block {
+    padding-bottom: 0em;
+}
+
+.paragraph-accented {
+    color: #ffffff;
+    background-color: #00a3a3;
+}
+
+div.about-accented-block {
+    padding-bottom: 0em;
+}
+
+.team-table {
+    border-spacing: 2.5em 3em;
+}
+
+.profile {
+    width: 30%;
+    vertical-align: top;
+}
+
+.profile-photo {
+    border-radius: 100vw;
+    width: 100%;
+}
+
+.profile-name {
+    color: #026464;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.profile-title {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.profile-text {
+    font-size: 11pt;
+}
+
+@media screen and (max-width: 600px) {
+    div.about-us-team-block {
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+}

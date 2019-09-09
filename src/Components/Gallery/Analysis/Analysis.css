@@ -1,0 +1,14 @@
+.analysis-tabs {
+  margin-bottom: 24px;
+}
+
+button.analysis-tab {
+  flex-grow: 1;
+  margin: auto;
+}
+
+@media only screen and (max-device-width : 640px) {
+  button.analysis-tab {
+    font-size: 9px;
+  }
+}

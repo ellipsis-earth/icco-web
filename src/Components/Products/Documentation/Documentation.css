@@ -1,0 +1,28 @@
+.documentation-block p
+{
+	font-size: 13pt;
+}
+
+.documentation-block h2
+{
+	margin-top: 2em;
+}
+
+.documentation-block h4
+{
+	font-size: 16px;
+	margin: 0;
+}
+
+.documentation-block h4+p
+{
+	margin-top: 0;
+}
+
+.code-documentation-block > h5 {
+    margin-bottom: 0em;
+}
+
+.code-documentation-block > p {
+    margin-top: 0em;
+}
