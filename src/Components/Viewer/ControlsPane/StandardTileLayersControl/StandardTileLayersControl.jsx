@@ -214,6 +214,7 @@ class StandardTileLayersControl extends PureComponent {
         return (
           <GeoJSON
             key={Math.random()}
+            name={standardTilesGeoJson.name}
             data={standardTilesGeoJson}
             style={ViewerUtility.createGeoJsonLayerStyle('cornflowerblue')}
             zIndex={ViewerUtility.standardTileLayerZIndex}

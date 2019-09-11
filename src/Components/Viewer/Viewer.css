@@ -110,6 +110,41 @@ div.selector-single {
   padding-top: 0px;
 }
 
+.leaflet-top.leaflet-left {
+  bottom: 0;
+}
+
+.leaflet-draw.leaflet-control {
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 10px;
+}
+
+.leaflet-draw-toolbar.leaflet-bar.leaflet-draw-toolbar-top
+{
+  border-radius: 1em;
+  border-color: rgba(0,0,0,0);
+}
+
+div.leaflet-draw.leaflet-control div.leaflet-draw-section div.leaflet-draw-toolbar a.leaflet-draw-draw-polygon
+{
+  height: 75px;
+  width: 75px;
+  background-image: url('/images/tree.svg');
+  background-size: 50px;
+  background-position: center;
+  border-radius: 1em;
+}
+
+.leaflet-touch .leaflet-draw-actions {
+  left: 78px;
+}
+
+.leaflet-control .MuiButton-label svg
+{
+  color: black;
+}
+
 @media only screen and (max-width: 700px) {
   .controls-pane {
     width: 100vw;

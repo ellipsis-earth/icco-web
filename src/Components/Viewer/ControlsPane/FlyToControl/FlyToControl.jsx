@@ -15,6 +15,7 @@ import {
   TextField
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import MyLocation from '@material-ui/icons/MyLocation';
 
 import Utility from '../../../../Utility';
 import ViewerUtility from '../../ViewerUtility';
@@ -31,7 +32,7 @@ class FlyToControl extends PureComponent {
     this.state = {
       expanded: true,
 
-      selectedFlyToType: ViewerUtility.flyToType.map,
+      selectedFlyToType: ViewerUtility.flyToType.currentLocation,
 
       elementId: ''
     };
@@ -148,8 +149,14 @@ class FlyToControl extends PureComponent {
       );
     }
 
-    return (
-      <Card className='layers-contol'>
+    let content;
+    if (this.props.type === 'map')
+    {
+      content = <Button variant='contained' color='secondary' onClick={this.onFlyTo} className='mapLocationButton'><MyLocation /></Button>
+    }
+    else
+    {
+      content = <Card className='layers-contol'>
         <CardHeader
           className='material-card-header'
           title={
@@ -197,6 +204,10 @@ class FlyToControl extends PureComponent {
           </CardActions>
         </Collapse>
       </Card>
+    }
+
+    return (
+      content
     );
   }
 }

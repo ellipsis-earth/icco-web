@@ -1,0 +1,56 @@
+.LayerSelector
+{
+	max-width: 64px;
+	width: 100%;
+	text-align: left;
+}
+
+.LayerSelector.LayerSelectorExpanded
+{
+	max-width: none;
+}
+
+.LayerSelector button
+{
+	padding: 0;
+	height: 64px;
+	width: 100%;
+}
+
+.LayerSelector.LayerSelectorExpanded .MuiCollapse-wrapper
+{
+	min-height: 64px;
+	height: auto;
+}
+
+.LayerSelector.LayerSelectorExpanded .loading-spinner
+{
+	position: relative;
+}
+
+.LayerSelector.LayerSelectorExpanded .loading-spinner svg
+{
+	color: #036464;
+}
+
+.LayerSelector .MuiCardHeader-action
+{
+	margin: 0 auto;
+	width: 100%;
+}
+
+.LayerSelector .material-card-header
+{
+	padding: 0;
+}
+
+.LayerSelector .material-card-header svg
+{
+	height: 1.25em;
+	width: 1.25em;
+}
+
+.LayerSelector .MuiCollapse-wrapper
+{
+	padding-top: 1em;
+}

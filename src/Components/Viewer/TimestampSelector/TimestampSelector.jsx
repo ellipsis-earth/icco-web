@@ -100,20 +100,24 @@ export class TimestampSelector extends PureComponent {
 
     return (
       <div className='timestamp-selector'>
-        <div>
+{/*        <div>
           {this.props.localization['Timestamps']} (
           <input type='checkbox' id='timestamp-range' onChange={this.onRangeToggleChange} checked={this.state.range}/>
           {this.props.localization['Range']});
-        </div>
-        <Slider
-          value={sliderValue}
-          onChange={this.onSlide}
-          marks
-          step={1}
-          min={0}
-          max={this.props.map.timestamps.length - 1}
-        />
-        <div>{dateText}</div>
+        </div>*/}
+        {
+          this.props.map.timestamps.length - 1 > 0 ?
+          [<Slider
+             value={sliderValue}
+             onChange={this.onSlide}
+             marks
+             step={1}
+             min={0}
+             max={this.props.map.timestamps.length - 1}
+           />,
+           <div>{dateText}</div>
+           ] : null
+        }
       </div>
     );
   }

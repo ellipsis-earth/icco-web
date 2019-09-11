@@ -40,6 +40,8 @@ class CustomPolygonLayersControl extends PureComponent {
 
       count: {}
     };
+
+    this.INIT_SELECTED = ['shea trees']
   }
 
   componentDidMount() {
@@ -71,7 +73,7 @@ class CustomPolygonLayersControl extends PureComponent {
 
       if (differentMap) {
         availableLayers = this.getAvailableLayers(this.props.map);
-        selectedLayers = [];
+        selectedLayers = [...availableLayers].filter(x => {return this.INIT_SELECTED.indexOf(x.name) > -1 ? x : null});
         this.layerGeoJsons = {};
 
         this.setState({
@@ -250,6 +252,7 @@ class CustomPolygonLayersControl extends PureComponent {
           return (
             <GeoJSON
               key={Math.random()}
+              name={customPolygonLayer.name}
               data={customPolygonsGeoJson}
               style={ViewerUtility.createGeoJsonLayerStyle(`#${customPolygonLayer.color}`)}
               zIndex={ViewerUtility.customPolygonLayerZIndex + i}

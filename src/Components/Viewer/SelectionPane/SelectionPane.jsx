@@ -1,14 +1,15 @@
 import React, { PureComponent } from 'react';
 
 import {
-  Card,
   Button,
+  Card,
+  Collapse,
   CardHeader,
   CardContent,
   CardActions,
   IconButton,
   Typography,
-  CircularProgress
+  CircularProgress,
 } from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
 import SaveAlt from '@material-ui/icons/SaveAlt';
@@ -145,7 +146,7 @@ class SelectionPane extends PureComponent {
     let firstRowButtons = [];
     let secondRowButtons = [];
 
-    firstRowButtons.push(
+    /*firstRowButtons.push(
       <Button
         key='analyse'
         variant='outlined'
@@ -156,7 +157,7 @@ class SelectionPane extends PureComponent {
       >
         {this.props.localization['ANALYSE']}
       </Button>
-    );
+    );*/
 
     if (element.type !== ViewerUtility.drawnPolygonLayerType) {
       firstRowButtons.push((
@@ -184,7 +185,7 @@ class SelectionPane extends PureComponent {
       title = this.props.localization['Custom polygon'];
 
       secondRowButtons.push(
-        <Button
+        /*<Button
           key='edit'
           variant='outlined'
           size='small'
@@ -193,7 +194,7 @@ class SelectionPane extends PureComponent {
           disabled={!user || mapAccessLevel < ApiManager.accessLevels.editOrDeleteCustomPolygons}
         >
           {this.props.localization['EDIT']}
-        </Button>,
+        </Button>,*/
         <Button
           key='delete'
           variant='outlined'
@@ -273,7 +274,7 @@ class SelectionPane extends PureComponent {
           }
           action={
             <div>
-              <IconButton
+              {/*<IconButton
                 onClick={this.onDownload}
                 aria-label='Download'
               >
@@ -284,7 +285,7 @@ class SelectionPane extends PureComponent {
                 aria-label='Close'
               >
                 <ClearIcon />
-              </IconButton>
+              </IconButton>*/}
             </div>
           }
         />

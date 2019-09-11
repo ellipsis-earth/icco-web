@@ -54,7 +54,7 @@ export class MainMenu extends Component {
               <img className="main-menu-logo" src="/images/logo-white.png" alt="Ellipsis Earth Intelligence logo white"/>
             </NavLink>
           </li>
-          <li>
+          {/*<li>
             <NavLink to="/products" className="main-menu-item">
               {this.props.localization['Products']}
             </NavLink>
@@ -90,7 +90,7 @@ export class MainMenu extends Component {
                 <a href="#" onClick={() => this.changeLanguage('dutch')}>Nederlands</a>
               </div>
             </div>
-          </li>
+          </li>*/}
           <li style={{display: this.props.user ? 'none' : 'block', float: "right"}}>
             <NavLink to="/login" className="main-menu-item">
               <span >

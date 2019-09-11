@@ -4,6 +4,12 @@ import { Map, Marker, GeoJSON } from 'react-leaflet';
 import 'leaflet-draw';
 import L from 'leaflet';
 
+import { Button } from '@material-ui/core';
+import InfoIcon from '@material-ui/icons/Info';
+import LayersIcon from '@material-ui/icons/Layers';
+
+import Control from 'react-leaflet-control';
+
 import ApiManager from '../../ApiManager';
 
 import Utility from '../../Utility';
@@ -12,8 +18,10 @@ import ViewerUtility from './ViewerUtility';
 import TimestampSelector from './TimestampSelector/TimestampSelector';
 
 import ControlsPane from './ControlsPane/ControlsPane';
+import FlyToControl from './ControlsPane/FlyToControl/FlyToControl';
 import DataPane from './DataPane/DataPane';
 import SelectionPane from './SelectionPane/SelectionPane';
+import LayerSelector from './LayerSelector/LayerSelector';
 
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-draw/dist/leaflet.draw.css';
@@ -81,7 +89,9 @@ class Viewer extends PureComponent {
 
       geolocation: null,
 
-      overrideLeafletLayers: null
+      overrideLeafletLayers: null,
+
+      selectedLayers: [],
     };
   }
 
@@ -342,7 +352,7 @@ class Viewer extends PureComponent {
         let layerName = feature.properties.layer;
         let layer = layerCollection.find(x => x.name === layerName);
   
-        color = `#${layer.color}`;
+        color = '#ff00ff80';
       }
     }   
 
@@ -563,7 +573,7 @@ class Viewer extends PureComponent {
   }
 
   attemptFlyTo = () => {
-    if (!this.flyToInfo || !this.flyToInfo.target) {
+    if (!this.flyToInfo || !this.flyToInfo.target) {  
       return;
     }
 
@@ -581,6 +591,17 @@ class Viewer extends PureComponent {
       }
 
       this.flyToInfo = null;
+    }
+  }
+
+  layerSelectorChange = (type, name, checked) => {
+    if (type === ViewerUtility.tileLayerType)
+    {
+      this.controlsPane.current.tileLayersControl.current.onLayerChange({target: {value: name, checked: !checked}});
+    }
+    else if (type === ViewerUtility.polygonLayerType)
+    {
+      this.controlsPane.current.polygonLayersControl.current.onLayerChange({target: {value: name, checked: !checked}});
     }
   }
 
@@ -622,6 +643,7 @@ class Viewer extends PureComponent {
             onFeatureClick={this.selectFeature}
             onFlyTo={this.onFlyTo}
             onDeselect={this.deselectCurrentElement}
+            getSelectedLayers={this.getSelectedLayers}
           />
           
           <div className='viewer-pane map-pane' style={mapPaneStyle}>
@@ -648,6 +670,42 @@ class Viewer extends PureComponent {
               maxZoom={19}
               onViewportChanged={this.onLeafletMapViewportChanged}
             >
+              <Control position="topleft" >
+                <FlyToControl
+                  localization={this.props.localization}
+                  user={this.props.user}
+                  map={this.state.map}
+                  onFlyTo={this.onFlyTo}
+                  type={'map'}
+                />
+              </Control>
+
+              <Control position="bottomright">
+                <Button variant='contained' color='secondary' onClick={() => {window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ','_blank');}}><InfoIcon /></Button>
+              </Control>
+
+              <LayerSelector
+                /*ref={this.controlsPane}
+                localization={this.props.localization}
+                user={this.props.user}
+                isOpen={this.state.panes.includes(CONTROL_PANE_NAME)}
+                leafletMapViewport={this.state.leafletMapViewport}
+                
+                geolocation={this.state.geolocation}
+                override={this.state.overrideLeafletLayers ? true : false}
+                onSelectMap={this.onSelectMap}
+                onDataPaneAction={this.onDataPaneAction}
+                onLayersChange={this.onLayersChange}
+                onFeatureClick={this.selectFeature}
+                onFlyTo={this.onFlyTo}
+                onDeselect={this.deselectCurrentElement}
+                layerSelector={false}*/
+                map={this.state.map}
+                timestampRange={this.state.timestampRange}
+                layers={this.state.allLayers}
+                onCheckChange={this.layerSelectorChange}
+              />
+
               {this.state.allLayers}
               {this.state.geolocation ? <Marker position={this.state.geolocation}/> : null}
             </Map>
@@ -669,6 +727,7 @@ class Viewer extends PureComponent {
             onLayersChange={this.onLayersChange}
             onFeatureClick={this.selectFeature}
           />
+
         </div>
 
         <div className='viewer-menu'>

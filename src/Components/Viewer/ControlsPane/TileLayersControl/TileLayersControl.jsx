@@ -41,7 +41,7 @@ const tileLayerTypes = [
   BASE_SATELLITE_LAYER_TYPE,
   {
     name: IMAGES_TILE_LAYER_NAME, 
-    defaultSelected: true,
+    defaultSelected: false,
     stacking: true,
     zIndex: ViewerUtility.tileLayerZIndex + 1
   },
@@ -71,6 +71,7 @@ class TileLayersControl extends PureComponent {
       attribution='Base satellite: <a href="https://maps.google.com">Google Maps</a>'
       zIndex={1}
       noWrap={true}
+      name={BASE_SATELLITE_LAYER_NAME}
     />)
 
   constructor(props, context) {
@@ -269,10 +270,11 @@ class TileLayersControl extends PureComponent {
             url={url}
             tileSize={256}
             noWrap={true}
-            maxZoom={map.zoom}
+            maxNativeZoom={map.zoom}
             format={'image/png'}
             zIndex={zIndex}
             bounds = {L.latLngBounds(L.latLng(map.yMin, map.xMin), L.latLng(map.yMax, map.xMax))}
+            name = {tileLayer.name}
           />);
 
           leafletTileLayersGroup.leafletTileLayers.push(leafletTileLayer);

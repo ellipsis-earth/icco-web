@@ -438,7 +438,7 @@ class GeoMessageControl extends PureComponent {
   }
 
   onNewMessage = (newMessage) => {
-    let newRawGeoMessages = [...this.state.rawGeoMessage, newMessage];
+    let newRawGeoMessages = [...this.state.rawGeoMessages, newMessage];
 
     this.setState({ rawGeoMessages: newRawGeoMessages }, this.scrollGeoMessagesToBottom);
   }

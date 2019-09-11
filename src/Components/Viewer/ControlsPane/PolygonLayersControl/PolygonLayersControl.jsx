@@ -39,6 +39,8 @@ class PolygonLayersControl extends PureComponent {
 
       count: {}
     };
+
+    this.INIT_SELECTED = ['Sampled areas']
   }
 
   componentDidMount() {
@@ -70,7 +72,7 @@ class PolygonLayersControl extends PureComponent {
 
       if (differentMap) {
         availableLayers = this.getAvailableLayers(this.props.map);
-        selectedLayers = [];
+        selectedLayers = [...availableLayers].filter(x => {return this.INIT_SELECTED.indexOf(x.name) > -1 ? x : null});
         this.layerGeoJsons = {};
 
         this.setState({
@@ -209,7 +211,7 @@ class PolygonLayersControl extends PureComponent {
       }
 
       let leafletGeojsonLayerPromise = ApiManager.post('/metadata/polygons', body, this.props.user)
-        .then(polygonIds => {
+        .then(async (polygonIds) => {
           let count = {
             ...this.state.count,
           };
@@ -222,13 +224,51 @@ class PolygonLayersControl extends PureComponent {
             return null;
           }
 
+          let page = 1;
+
+          body = {
+            mapId: map.id,
+            page: page,
+            filters: {forms: ['reserved', 'done'], types: ['polygon']}
+          }
+
+          let reserved = [];
+          let done = [];
+
+          let formMessages = await ApiManager.post('/geoMessage/feed', body, this.props.user);
+
+          while (formMessages.length > 0)
+          {
+            for (let i = 0; i < formMessages.length; i++)
+            {
+              formMessages[i].form.formName === 'reserved' ? reserved.push(formMessages[i].elementId) : done.push(formMessages[i].elementId);
+            }
+
+            body.page = body.page + 1;
+            formMessages = await ApiManager.post('/geoMessage/feed', body, this.props.user)
+          }
+
+          reserved = reserved.filter((x) => {return done.indexOf(x) === -1});
+
+          let allFilter = [...reserved, ...done];
+
+          polygonIds.ids = polygonIds.ids.filter((x) => {return allFilter.indexOf(x) === -1});
+
           body = {
             mapId: map.id,
             timestamp: map.timestamps[timestampRange.end].timestampNumber,
             polygonIds: polygonIds.ids
           }
 
-          return ApiManager.post('/geometry/polygons', body, this.props.user);
+          let ids = body.polygonIds.length > 0 ? await ApiManager.post('/geometry/polygons', body, this.props.user) : [];
+
+          body.polygonIds = reserved;
+          let reservedIds = body.polygonIds.length > 0 ? await ApiManager.post('/geometry/polygons', body, this.props.user) : [];
+
+          body.polygonIds = done;
+          let doneIds = body.polygonIds.length > 0 ? await ApiManager.post('/geometry/polygons', body, this.props.user) : [];
+
+          return {ids: ids, reserved: reservedIds, done: doneIds};
         })
         .then(polygonsGeoJson => {
           if (!polygonsGeoJson) {
@@ -236,20 +276,38 @@ class PolygonLayersControl extends PureComponent {
             return null;
           }
 
-          this.layerGeoJsons[polygonLayer.name] = {
-            geoJson: polygonsGeoJson,
-            bounds: bounds
-          };
+          let geoJsons = [];
 
-          return (
-            <GeoJSON
-              key={Math.random()}
-              data={polygonsGeoJson}
-              style={ViewerUtility.createGeoJsonLayerStyle(`#${polygonLayer.color}`)}
-              zIndex={ViewerUtility.polygonLayerZIndex + i}
-              onEachFeature={(feature, layer) => layer.on({ click: () => this.onFeatureClick(feature, polygonLayer.hasAggregatedData) })}
-            />
-          );
+          for(let key in polygonsGeoJson)
+          {
+            this.layerGeoJsons[polygonLayer.name] = {
+              geoJson: polygonsGeoJson[key],
+              bounds: bounds
+            };
+
+            let color = '#' + polygonLayer.color;
+            if(key === 'reserved')
+            {
+              color = '#ff7f00ff';
+            }
+            else if(key === 'done')
+            {
+              color = '#00ff00ff';
+            }
+
+            geoJsons.push(
+              <GeoJSON
+                key={Math.random()}
+                name={polygonLayer.name}
+                data={polygonsGeoJson[key]}
+                style={ViewerUtility.createGeoJsonLayerStyle(color)}
+                zIndex={ViewerUtility.polygonLayerZIndex + i}
+                onEachFeature={(feature, layer) => layer.on({ click: () => this.onFeatureClick(feature, polygonLayer.hasAggregatedData) })}
+              />
+            );
+          }
+
+          return geoJsons;
         });
 
       promises.push(leafletGeojsonLayerPromise);
@@ -261,6 +319,7 @@ class PolygonLayersControl extends PureComponent {
   }
 
   onLayerChange = (e) => {
+
     let layerName = e.target.value;
     let checked = e.target.checked;
 

@@ -21,8 +21,8 @@ export class MapSelector extends PureComponent {
       atlasSelect: null,
       mapselect: null,
 
-      selectedAtlas: 'default',
-      selectedMap: { id: 'default' },
+      selectedAtlas: 'ICCO',
+      selectedMap: { id: '6f319b4e-1a39-45d0-b9ca-f2c60dc53831' },
     };
   }
 
@@ -58,9 +58,7 @@ export class MapSelector extends PureComponent {
         }
 
         this.setState({ maps: maps, selectedAtlas: selectedAtlas }, () => {
-          if (urlSelectedMap) {
-            this.onSelectMap({ target: { value: urlSelectedMap.id } })
-          }
+          this.onSelectMap({ target: { value: '6f319b4e-1a39-45d0-b9ca-f2c60dc53831' } })
         });
       })
       .catch(err => {
@@ -75,10 +73,11 @@ export class MapSelector extends PureComponent {
       return;
     }
 
-    this.setState({ selectedAtlas: atlas, selectedMap: { id: 'default' }});
+    this.setState({ selectedAtlas: atlas, selectedMap: { id: '6f319b4e-1a39-45d0-b9ca-f2c60dc53831' }});
   }
 
   onSelectMap = (e) => {
+    
     if (!e.target.value) {
       return;
     }
@@ -250,8 +249,8 @@ export class MapSelector extends PureComponent {
   render() {
     return (
       <div>
-        {this.renderAtlasSelect()}
-        {this.renderMapSelect()}
+{/*        {this.renderAtlasSelect()}
+        {this.renderMapSelect()}*/}
       </div>
     );
   }

@@ -13,12 +13,12 @@ import ErrorHandler from './ErrorHandler';
 
 import MainMenu from './Components/MainMenu/MainMenu';
 import Viewer from './Components/Viewer/Viewer';
-import Home from './Components/Home/Home';
+/*import Home from './Components/Home/Home';
 import About from './Components/About/About';
-import Products from './Components/Products/Products';
+import Products from './Components/Products/Products';*/
 import Login from './Components/Login/Login';
-import Sector from './Components/Sectors/Sectors';
-import Gallery from './Components/Gallery/Gallery';
+/*import Sector from './Components/Sectors/Sectors';
+import Gallery from './Components/Gallery/Gallery';*/
 import Account from './Components/Account/Account';
 
 import './App.css';
@@ -40,7 +40,7 @@ class App extends Component {
 
   constructor(props, context) {
     super(props, context)
-    document.title = 'Ellipsis Earth Intelligence';
+    document.title = 'ICCO - Shea Tree Viewer';
 
     this.state = {
       init: false,
@@ -164,15 +164,15 @@ class App extends Component {
           }
 
           <div className={contentClassName}>
-            <Route exact path='/'
+            {/*<Route exact path='/'
               render={() =>
                 <Home
                   language={this.state.language}
                 />
               }
-            />
-            <Route
-              path='/viewer'
+            />*/}
+            <Route exact
+              path='/'
               render={() =>
                 <Viewer 
                   user={this.state.user}
@@ -181,7 +181,7 @@ class App extends Component {
                 />
               }
             />
-            <Route path='/products'
+            {/*<Route path='/products'
               render={() =>
                 <Products
                   language={this.state.language}
@@ -215,7 +215,7 @@ class App extends Component {
                   localization={this.state.localization}
                 />
             }
-            />
+            />*/}
             <Route
               path='/login'
               render={() =>

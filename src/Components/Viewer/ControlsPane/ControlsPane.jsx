@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import MapSelector from './MapSelector/MapSelector';
 import FlyToControl from './FlyToControl/FlyToControl'
 import TileLayersControl from './TileLayersControl/TileLayersControl';
-import StandardTileLayersControl from './StandardTileLayersControl/StandardTileLayersControl';
+// import StandardTileLayersControl from './StandardTileLayersControl/StandardTileLayersControl';
 import PolygonLayersControl from './PolygonLayersControl/PolygonLayersControl';
 import CustomPolygonLayersControl from './CustomPolygonLayersControl/CustomPolygonLayersControl';
 
@@ -27,6 +27,7 @@ class ControlsPane extends PureComponent {
   constructor(props, context) {
     super(props, context);
 
+    this.tileLayersControl = React.createRef();
     this.standardTileLayersControl = React.createRef();
     this.polygonLayersControl = React.createRef();
     this.customPolygonLayersControl = React.createRef();
@@ -109,6 +110,7 @@ class ControlsPane extends PureComponent {
         />
 
         <TileLayersControl
+          ref={this.tileLayersControl}
           localization={this.props.localization}
           user={this.props.user}
           map={this.state.map}
@@ -140,7 +142,7 @@ class ControlsPane extends PureComponent {
           onFeatureClick={(feature) => this.props.onFeatureClick(ViewerUtility.customPolygonTileLayerType, feature, true)}
         />
 
-        <StandardTileLayersControl
+        {/*<StandardTileLayersControl
           ref={this.standardTileLayersControl}
           localization={this.props.localization}
           user={this.props.user}
@@ -150,7 +152,7 @@ class ControlsPane extends PureComponent {
           override={this.props.override}
           onLayersChange={(layers) => this.onLayersChange(ViewerUtility.standardTileLayerType, layers)}
           onFeatureClick={(feature) => this.props.onFeatureClick(ViewerUtility.standardTileLayerType, feature, true)}
-        />
+        />*/}
       </div>
     );
   }
