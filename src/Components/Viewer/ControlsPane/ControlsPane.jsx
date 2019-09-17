@@ -5,7 +5,7 @@ import FlyToControl from './FlyToControl/FlyToControl'
 import TileLayersControl from './TileLayersControl/TileLayersControl';
 // import StandardTileLayersControl from './StandardTileLayersControl/StandardTileLayersControl';
 import PolygonLayersControl from './PolygonLayersControl/PolygonLayersControl';
-import CustomPolygonLayersControl from './CustomPolygonLayersControl/CustomPolygonLayersControl';
+//import CustomPolygonLayersControl from './CustomPolygonLayersControl/CustomPolygonLayersControl';
 
 import ViewerUtility from '../ViewerUtility';
 
@@ -33,7 +33,8 @@ class ControlsPane extends PureComponent {
     this.customPolygonLayersControl = React.createRef();
 
     this.state = {
-      map: null
+      map: null,
+      refresh: false,
     };
   }  
 
@@ -130,7 +131,7 @@ class ControlsPane extends PureComponent {
           onFeatureClick={(feature, hasAggregatedData) => this.props.onFeatureClick(ViewerUtility.polygonLayerType, feature, hasAggregatedData)}
         />
 
-        <CustomPolygonLayersControl
+        {/*<CustomPolygonLayersControl
           ref={this.customPolygonLayersControl}
           localization={this.props.localization}
           user={this.props.user}
@@ -140,7 +141,7 @@ class ControlsPane extends PureComponent {
           override={this.props.override}
           onLayersChange={(layers) => this.onLayersChange(ViewerUtility.customPolygonTileLayerType, layers)}
           onFeatureClick={(feature) => this.props.onFeatureClick(ViewerUtility.customPolygonTileLayerType, feature, true)}
-        />
+        />*/}
 
         {/*<StandardTileLayersControl
           ref={this.standardTileLayersControl}

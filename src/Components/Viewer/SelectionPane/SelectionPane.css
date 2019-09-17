@@ -21,9 +21,9 @@ div.selection-pane-private {
   text-align: left;
 }
 
-div.selection-pane-card-actions {
+/*div.selection-pane-card-actions {
   display: block;
-}
+}*/
 
 div.specific-actions {
   margin-left: 0px;
@@ -38,4 +38,68 @@ button.selection-pane-button {
 
 .no-text-transform {
   text-transform: none;
+}
+
+.selection-pane .card-content
+{
+  padding-bottom: 0.25em;
+}
+
+.selection-pane .selection-pane-card-actions
+{
+  padding-bottom: 1em;
+  flex-wrap: wrap;
+}
+
+.selection-pane .loading-spinner {
+  position: relative;
+}
+
+#uploadButton
+{
+  display: none;
+}
+
+.selection-pane .selection-pane-card-actions button, .FeauxButton, .selection-pane-card-actions span.selection-pane-button
+{
+  flex-grow: 1;
+  margin: 0.5em;
+  display: flex;
+}
+
+button.MuiFab-secondary
+{
+  color: #026464;
+}
+
+button.MuiFab-primary
+{
+  color: white;
+}
+
+label.FeauxButton span.selection-pane-button
+{
+  margin: 0;
+}
+
+.Toastify__toast--success
+{
+  background-color: #026464;
+  text-align: center;
+}
+
+.pleaseLogin
+{
+  width: 100%;
+}
+
+.selection-pane .MuiCardHeader-content
+{
+  width: 100%;
+}
+
+.selection-pane .MuiCardHeader-action
+{
+  position: absolute;
+  right: 18px;
 }

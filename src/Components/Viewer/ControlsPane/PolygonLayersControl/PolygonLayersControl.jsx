@@ -65,7 +65,7 @@ class PolygonLayersControl extends PureComponent {
       this.props.leafletMapViewport.bounds.yMin !== prevProps.leafletMapViewport.bounds.yMin ||
       this.props.leafletMapViewport.bounds.yMax !== prevProps.leafletMapViewport.bounds.yMax;
 
-    if (differentMap || differentTimestamp || differentBounds) {
+    if (differentMap || differentTimestamp || differentBounds ) {
 
       let availableLayers = this.state.availableLayers;
       let selectedLayers = this.state.selectedLayers;
@@ -89,6 +89,13 @@ class PolygonLayersControl extends PureComponent {
     }
   }
 
+  refresh = () => {
+    this.prepareLayers(this.props.map, this.props.timestampRange, this.state.availableLayers, this.state.selectedLayers)
+    .then(leafletLayers => {
+      this.props.onLayersChange(leafletLayers);
+    });
+  }
+
   selectLayer = (layer) => {
     let availableLayer = this.state.availableLayers.find(x => x.name === layer);
     if (availableLayer && !this.state.selectedLayers.find(x => x.name === layer)) {
@@ -97,7 +104,9 @@ class PolygonLayersControl extends PureComponent {
   }
 
   getAvailableLayers = (map) => {
-    let availableLayers = [];
+    return map.layers.polygon;
+    
+    /*let availableLayers = [];
 
     for (let i = 0; i < map.layers.polygon.length; i++) {
 
@@ -118,7 +127,7 @@ class PolygonLayersControl extends PureComponent {
       }
     }
 
-    return availableLayers;
+    return availableLayers;*/
   }
 
   createLayerCheckboxes = () => {
@@ -224,51 +233,127 @@ class PolygonLayersControl extends PureComponent {
             return null;
           }
 
-          let page = 1;
+          let ids = {};
+          let properties = {};
 
-          body = {
-            mapId: map.id,
-            page: page,
-            filters: {forms: ['reserved', 'done'], types: ['polygon']}
+          if (polygonLayer.name === 'Sampled areas')
+          {
+            body = {
+              mapId: map.id,
+              filters: {forms: ['reserved', 'done'], types: ['polygon']}
+            }
+
+
+            let formMessagesPromises = [];
+
+            for (let j = 1; j < 5; j++)
+            {
+              body.page = j;
+              formMessagesPromises.push(ApiManager.post('/geoMessage/feed', body, this.props.user));
+            }
+
+            let messagesArray = await Promise.all(formMessagesPromises);
+            let messages = Array.prototype.concat.apply([], messagesArray);
+
+            for (let k = 0; k < messages.length; k++)
+            {
+              ids[messages[k].form.formName] ? ids[messages[k].form.formName].push(messages[k].elementId) : ids[messages[k].form.formName] = [messages[k].elementId];
+              properties[messages[k].elementId] = {};
+              properties[messages[k].elementId].user = messages[k].user;
+              properties[messages[k].elementId].messageID = messages[k].id;
+            }
+
+            ids['reserved'] = ids['reserved'].filter((x) => {return ids['done'].indexOf(x) === -1});
+
+            let allFilter = [...ids['reserved'], ...ids['done']];
+
+            ids['ids'] = polygonIds.ids.filter((x) => {return allFilter.indexOf(x) === -1});
           }
 
-          let reserved = [];
-          let done = [];
 
-          let formMessages = await ApiManager.post('/geoMessage/feed', body, this.props.user);
+          /*let formMessages = await ApiManager.post('/geoMessage/feed', body, this.props.user);
 
           while (formMessages.length > 0)
           {
             for (let i = 0; i < formMessages.length; i++)
             {
               formMessages[i].form.formName === 'reserved' ? reserved.push(formMessages[i].elementId) : done.push(formMessages[i].elementId);
+              properties[formMessages[i].elementId] = {};
+              properties[formMessages[i].elementId].user = formMessages[i].user;
+              properties[formMessages[i].elementId].messageID = formMessages[i].id;
             }
 
             body.page = body.page + 1;
             formMessages = await ApiManager.post('/geoMessage/feed', body, this.props.user)
-          }
+          }*/
 
-          reserved = reserved.filter((x) => {return done.indexOf(x) === -1});
+          /*reserved = reserved.filter((x) => {return done.indexOf(x) === -1});
 
           let allFilter = [...reserved, ...done];
 
-          polygonIds.ids = polygonIds.ids.filter((x) => {return allFilter.indexOf(x) === -1});
+          polygonIds.ids = polygonIds.ids.filter((x) => {return allFilter.indexOf(x) === -1});*/
+          let geometriesPromises = [];
 
-          body = {
-            mapId: map.id,
-            timestamp: map.timestamps[timestampRange.end].timestampNumber,
-            polygonIds: polygonIds.ids
+          for(let key in ids)
+          {
+            body = {
+              mapId: map.id,
+              timestamp: map.timestamps[timestampRange.end].timestampNumber,
+              polygonIds: ids[key]
+            }
+
+            geometriesPromises.push(body.polygonIds.length > 0 ? ApiManager.post('/geometry/polygons', body, this.props.user) : null);
           }
 
-          let ids = body.polygonIds.length > 0 ? await ApiManager.post('/geometry/polygons', body, this.props.user) : [];
+          let geometries = await Promise.all(geometriesPromises);
 
-          body.polygonIds = reserved;
+          let keys = Object.keys(ids);
+          let returnObject = {};
+
+          for (let l = 0; l < keys.length; l++)
+          {
+            let key = keys[l];
+            if (key !== 'ids')
+            {
+              for (let m = 0; m < geometries[l].features.length; m++)
+              {
+                let feature = geometries[l].features[m];
+                feature.properties.status = key;
+                feature.properties.statusOwner = properties[feature.id].user;
+                feature.properties.messageID = properties[feature.id].messageID;
+              }
+            }
+
+            returnObject[key] = geometries[l];
+          }
+
+
+          //let ids = body.polygonIds.length > 0 ? await ApiManager.post('/geometry/polygons', body, this.props.user) : [];
+
+          /*body.polygonIds = reserved;
           let reservedIds = body.polygonIds.length > 0 ? await ApiManager.post('/geometry/polygons', body, this.props.user) : [];
 
           body.polygonIds = done;
           let doneIds = body.polygonIds.length > 0 ? await ApiManager.post('/geometry/polygons', body, this.props.user) : [];
 
-          return {ids: ids, reserved: reservedIds, done: doneIds};
+          for (let i = 0; i < reservedIds.features.length; i++)
+          {
+            reservedIds.features[i].properties.status = 'reserved';
+            reservedIds.features[i].properties.statusOwner = properties[reservedIds.features[i].id].user;
+            reservedIds.features[i].properties.messageID = properties[reservedIds.features[i].id].messageID;
+          }
+
+          for (let i = 0; i < doneIds.features.length; i++)
+          {
+            doneIds.features[i].properties.status = 'done';
+            doneIds.features[i].properties.statusOwner = properties[doneIds.features[i].id].user;
+            doneIds.features[i].properties.messageID = properties[doneIds.features[i].id].messageID;
+          }
+
+          let returnObject = {ids: ids, reserved: reservedIds, done: doneIds};*/
+
+
+          return returnObject;
         })
         .then(polygonsGeoJson => {
           if (!polygonsGeoJson) {
@@ -277,6 +362,8 @@ class PolygonLayersControl extends PureComponent {
           }
 
           let geoJsons = [];
+
+          let i = 1;
 
           for(let key in polygonsGeoJson)
           {
@@ -305,6 +392,8 @@ class PolygonLayersControl extends PureComponent {
                 onEachFeature={(feature, layer) => layer.on({ click: () => this.onFeatureClick(feature, polygonLayer.hasAggregatedData) })}
               />
             );
+
+            i++;
           }
 
           return geoJsons;

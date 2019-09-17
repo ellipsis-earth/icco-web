@@ -63,20 +63,23 @@ export default class LayerSelector extends PureComponent {
   createCheckboxList(selectedLayers) {
     if(this.props.map && this.props.map.layers)
     {
+      //console.log(this.props.map.layers);
       let selectObjects = [];
     
       let layers = this.props.map.layers;
       for (let key in layers)
       {
         let timestamps = layers[key];
+        //console.log(timestamps)
   
         let filtered = timestamps.find((timestamp) => {return key === 'customPolygon' || (timestamp.timestampNumber === this.props.timestampRange.end) ? timestamp : null})
-  
-        if (key === 'customPolygon')
+        //console.log(filtered)
+
+        if (filtered && key === 'customPolygon')
         {
           selectObjects.push(this.createCheckbox(filtered.name, key, selectedLayers));
         }
-        else
+        else if(filtered)
         {
           for (let i = 0; i < filtered.layers.length; i++)
           {

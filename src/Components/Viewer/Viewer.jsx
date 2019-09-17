@@ -605,6 +605,11 @@ class Viewer extends PureComponent {
     }
   }
 
+  onStatusChange = (element) => {
+    this.controlsPane.current.polygonLayersControl.current.refresh();
+    this.setState({selectedElement: element});
+  }
+
   render() {
     let mapPaneStyle = {
       display: 'block',
@@ -662,6 +667,8 @@ class Viewer extends PureComponent {
               onFlyTo={this.onFlyTo}
               onDeselect={this.deselectCurrentElement}
               onDeleteCustomPolygon={this.updateCustomPolygons}
+              timestampRange={this.state.timestampRange}
+              onStatusChange={this.onStatusChange}
             />
             <Map 
               center={DEFAULT_VIEWPORT.center} 
@@ -703,7 +710,7 @@ class Viewer extends PureComponent {
                 map={this.state.map}
                 timestampRange={this.state.timestampRange}
                 layers={this.state.allLayers}
-                onCheckChange={this.layerSelectorChange}
+                onCheckChange={this.onCheckChange}
               />
 
               {this.state.allLayers}

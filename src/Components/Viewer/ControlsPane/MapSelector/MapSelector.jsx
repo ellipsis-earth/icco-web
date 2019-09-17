@@ -113,7 +113,7 @@ export class MapSelector extends PureComponent {
     let timestampsPromise = ApiManager.post('/metadata/timestamps', body, this.props.user);
     let tileLayersPromise = ApiManager.post('/metadata/tileLayers', body, this.props.user);
     let polygonLayersPromise = ApiManager.post('/metadata/polygonLayers', body, this.props.user);
-    let customPolygonLayersPromise = ApiManager.post('/geoMessage/customPolygon/layers', body, this.props.user);
+    //let customPolygonLayersPromise = ApiManager.post('/geoMessage/customPolygon/layers', body, this.props.user);
 
     let classesPromise = ApiManager.post('/metadata/classes', body, this.props.user);
     let measurementsPromise = ApiManager.post('/metadata/measurements', body, this.props.user);
@@ -126,7 +126,7 @@ export class MapSelector extends PureComponent {
       timestampsPromise,
       tileLayersPromise,
       polygonLayersPromise,
-      customPolygonLayersPromise,
+      //customPolygonLayersPromise,
 
       classesPromise,
       measurementsPromise,
@@ -139,13 +139,13 @@ export class MapSelector extends PureComponent {
         map.layers = {
           tile: results[1],
           polygon: results[2],
-          customPolygon: results[3]
+          //customPolygon: results[3]
         };
 
-        map.classes = results[4];
-        map.measurements = results[5];
-        if (results[6]) {
-          map.forms = results[6]
+        map.classes = results[3];
+        map.measurements = results[4];
+        if (results[5]) {
+          map.forms = results[5]
         }
 
         map.metadataLoaded = true;
