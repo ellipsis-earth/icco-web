@@ -163,7 +163,7 @@ class App extends Component {
               />
           }
 
-          <div className={contentClassName}>
+          <div className={contentClassName + (window.location.hostname === 'localhost' ? ' dev' : '')}>
             {/*<Route exact path='/'
               render={() =>
                 <Home

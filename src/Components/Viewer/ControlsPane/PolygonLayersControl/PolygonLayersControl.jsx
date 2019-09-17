@@ -40,7 +40,7 @@ class PolygonLayersControl extends PureComponent {
       count: {}
     };
 
-    this.INIT_SELECTED = ['Sampled areas']
+    this.INIT_SELECTED = ['Sampled areas', 'Shea trees']
   }
 
   componentDidMount() {
@@ -233,7 +233,7 @@ class PolygonLayersControl extends PureComponent {
             return null;
           }
 
-          let ids = {};
+          let ids = {reserved: null, done: null, ids:polygonIds.ids};
           let properties = {};
 
           if (polygonLayer.name === 'Sampled areas')
@@ -296,13 +296,16 @@ class PolygonLayersControl extends PureComponent {
 
           for(let key in ids)
           {
-            body = {
-              mapId: map.id,
-              timestamp: map.timestamps[timestampRange.end].timestampNumber,
-              polygonIds: ids[key]
-            }
+            if(ids[key])
+            {
+              body = {
+                mapId: map.id,
+                timestamp: map.timestamps[timestampRange.end].timestampNumber,
+                polygonIds: ids[key]
+              }
 
-            geometriesPromises.push(body.polygonIds.length > 0 ? ApiManager.post('/geometry/polygons', body, this.props.user) : null);
+              geometriesPromises.push(body.polygonIds.length > 0 ? ApiManager.post('/geometry/polygons', body, this.props.user) : null);
+            }
           }
 
           let geometries = await Promise.all(geometriesPromises);
@@ -313,14 +316,17 @@ class PolygonLayersControl extends PureComponent {
           for (let l = 0; l < keys.length; l++)
           {
             let key = keys[l];
-            if (key !== 'ids')
+            if (key !== 'ids' && geometries[l])
             {
               for (let m = 0; m < geometries[l].features.length; m++)
               {
                 let feature = geometries[l].features[m];
-                feature.properties.status = key;
-                feature.properties.statusOwner = properties[feature.id].user;
-                feature.properties.messageID = properties[feature.id].messageID;
+                if (properties[feature.id])
+                {
+                  feature.properties.status = key;
+                  feature.properties.statusOwner = properties[feature.id].user;
+                  feature.properties.messageID = properties[feature.id].messageID;
+                }
               }
             }
 
@@ -351,7 +357,6 @@ class PolygonLayersControl extends PureComponent {
           }
 
           let returnObject = {ids: ids, reserved: reservedIds, done: doneIds};*/
-
 
           return returnObject;
         })
@@ -436,8 +441,8 @@ class PolygonLayersControl extends PureComponent {
       this.setState({ selectedLayers: newSelectedLayers });
 
       this.prepareLayers(this.props.map, this.props.timestampRange, this.state.availableLayers, newSelectedLayers)
-        .then(standardTilesLayers => {
-          this.props.onLayersChange(standardTilesLayers);
+        .then(polygonsGeoJson => {
+          this.props.onLayersChange(polygonsGeoJson);
         });
     }
   }

@@ -76,7 +76,7 @@ export class Account extends Component {
               />
             } 
           />
-          <Route 
+          {/*<Route 
             path="/account/mapManagement" 
             render={() => 
               <MapManagement
@@ -86,7 +86,7 @@ export class Account extends Component {
                 onLogout={this.props.onLogout}
               />
             } 
-          />
+          />*/}
         </div>
         <Footer></Footer>
       </div>

@@ -31,7 +31,13 @@
   bottom: 0;
   height: calc(100% - 3.5em);
   width: 100%;
-  overflow-x: hidden;
+  margin-bottom: 0em;
+  overflow: hidden;
+}
+
+.content.dev
+{
+  overflow-y: auto;
 }
 
 .content-full {

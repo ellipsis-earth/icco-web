@@ -60,7 +60,7 @@ class ControlsPane extends PureComponent {
   }
 
   updateCustomPolygons = () => {
-    this.customPolygonLayersControl.current.refresh();
+    this.polygonLayersControl.current.refresh();
   }
 
   onSelectMap = (map) => {

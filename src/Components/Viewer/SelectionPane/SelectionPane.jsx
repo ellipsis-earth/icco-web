@@ -65,10 +65,10 @@ class SelectionPane extends PureComponent {
     this.setState({ loading: true }, () => {
       let body = {
         mapId: this.props.map.id,
-        customPolygonId: this.props.element.feature.properties.id
+        polygonId: this.props.element.feature.properties.id
       };
 
-      ApiManager.post('/geomessage/customPolygon/deletePolygon', body, this.props.user)
+      ApiManager.post('/geometry/deletePolygon', body, this.props.user)
         .then(() => {
           this.props.onDeleteCustomPolygon();
           this.props.onDeselect();
@@ -88,18 +88,32 @@ class SelectionPane extends PureComponent {
     this.setState({ isOpen: false });
   }
 
-  onElementActionClick = (action /*, e = {}*/) => {
+  onElementActionClick = (action) => {
     if (action === DELETE_CUSTOM_POLYGON_ACTION) {
       this.deleteCustomPolygon();
     }
-    /*else if(action === 'claim')
+    else if(action === 'create_custom_polygon')
     {
-      this.onShapeClaim()
-    }*/
+      console.log(action, this.props.element)
+
+      let body = {
+        mapId: this.props.map.id,
+        timestamp: this.props.timestampRange.end,
+        feature: this.props.element.feature,
+        layer: 'Shea trees',
+      }
+
+      ApiManager.post('/geometry/addPolygon', body, this.props.user)
+      .then((result) => {
+        console.log(result)
+      })
+      .catch(err => {
+        toast.error('Error while adding Shea Tree');
+      });
+    }
     else
     {
-      console.log(action)
-      console.log(this.props.element)
+      console.log(action, this.props.element)
 
       /*if (action === 'geoMessage')
       {
@@ -166,12 +180,12 @@ class SelectionPane extends PureComponent {
     let file = e.target.files[0];
 
     if (!file) {
-      alert('No file');
+      toast.warn('No file');
       return;
     }
 
     if (!IMAGE_MIME_TYPES.includes(file.type)) {
-      alert('Invalid image type.');
+      toast.warn('Invalid image type.');
       return;
     }
 
@@ -187,7 +201,7 @@ class SelectionPane extends PureComponent {
         .then(image => {
 
           if (image.size > MAX_IMAGE_SIZE) {
-            alert(`Image too large (max ${(MAX_IMAGE_SIZE / 1000).toFixed(2)} MB).`);
+            toast.warn(`Image too large (max ${(MAX_IMAGE_SIZE / 1000).toFixed(2)} MB).`);
             this.setState({ loading: false });
             return;
           }
@@ -209,7 +223,7 @@ class SelectionPane extends PureComponent {
         .catch(err => {
           console.log(err)
           this.setState({ loading: false });
-          alert('Invalid image type.');
+          toast.warn('Invalid image type.');
         });
     });
   }
@@ -247,7 +261,7 @@ class SelectionPane extends PureComponent {
       });
     })
     .catch(err => {
-      alert('An error occurred while adding a GeoMessage.');
+      toast.error('An error occurred while adding a GeoMessage.');
       this.setState({ loading: false });
     });
   }
@@ -300,7 +314,8 @@ class SelectionPane extends PureComponent {
           this.props.onStatusChange(element);
         })
         .catch(err =>{
-          alert('An error occurred while adding a reservation.');
+          toast.error('An error occurred while adding a reservation.');
+          this.setState({ loading: false });
         })
       }
       else if (add === false)
@@ -319,7 +334,8 @@ class SelectionPane extends PureComponent {
           this.props.onStatusChange(element);
         })
         .catch(err =>{
-          alert('An error occurred while deleting a reservation.');
+          toast.error('An error occurred while deleting a reservation.');
+          this.setState({ loading: false });
         })
       }
     }
@@ -339,7 +355,8 @@ class SelectionPane extends PureComponent {
             //add form add
           })
           .catch(err =>{
-            alert('An error occurred while deleting a reservation.');
+            toast.error('An error occurred while deleting a reservation.');
+            this.setState({ loading: false });
           })
 
           body = {
@@ -369,7 +386,8 @@ class SelectionPane extends PureComponent {
               this.props.onStatusChange(element);
             })
             .catch(err =>{
-              alert('An error occurred while adding done.');
+              toast.error('An error occurred while adding done.');
+              this.setState({ loading: false });
             })
         }
         else
@@ -401,7 +419,8 @@ class SelectionPane extends PureComponent {
             this.props.onStatusChange(element);
           })
           .catch(error =>{
-            alert('An error occurred while adding done.');
+            toast.error('An error occurred while adding done.');
+            this.setState({ loading: false });
           })
         }
 
@@ -422,7 +441,8 @@ class SelectionPane extends PureComponent {
           this.props.onStatusChange(element);
         })
         .catch(err =>{
-          alert('An error occurred while deleting done.');
+          toast.error('An error occurred while deleting done.');
+          this.setState({ loading: false });
         })
       }
     }
@@ -483,127 +503,119 @@ class SelectionPane extends PureComponent {
       ));
     }*/
 
-    if (element.type === ViewerUtility.standardTileLayerType) {
+    if (element.type === ViewerUtility.standardTileLayerType)
+    {
       title = this.props.localization['Standard tile'];
     }
-    else if (element.type === ViewerUtility.polygonLayerType) {
+    else if (element.type === ViewerUtility.polygonLayerType)
+    {
       title = this.props.localization['Polygon'];
-
-      let claimDisabled = true;
-      let doneDisabled = true;
-      let claimAdd = true;
-      let doneAdd = true;
-
-      if(this.props.user)
+      if (element.feature.properties.layer && element.feature.properties.layer === 'Sampled areas')
       {
-        if (!element.feature.properties.status && mapAccessLevel >= ApiManager.accessLevels.addGeoMessages)
+        let claimDisabled = true;
+        let doneDisabled = true;
+        let claimAdd = true;
+        let doneAdd = true;
+
+        if(this.props.user)
         {
-          claimDisabled = false;
-          doneDisabled = false;
-        }
-        else if (element.feature.properties.status === 'reserved')
-        {
-          if (element.feature.properties.statusOwner === this.props.user.username || mapAccessLevel >= ApiManager.accessLevels.deleteGeomessages)
+          if (!element.feature.properties.status && mapAccessLevel >= ApiManager.accessLevels.addGeoMessages)
           {
             claimDisabled = false;
             doneDisabled = false;
-            claimAdd = false;
           }
-        }
-        else if (element.feature.properties.status === 'done')
-        {
-          if (element.feature.properties.statusOwner === this.props.user.username || mapAccessLevel >= ApiManager.accessLevels.deleteGeomessages)
+          else if (element.feature.properties.status === 'reserved')
           {
-            claimDisabled = true;
-            doneDisabled = false;
-            doneAdd = false;
+            if (element.feature.properties.statusOwner === this.props.user.username || mapAccessLevel >= ApiManager.accessLevels.deleteGeomessages)
+            {
+              claimDisabled = false;
+              doneDisabled = false;
+              claimAdd = false;
+            }
+          }
+          else if (element.feature.properties.status === 'done')
+          {
+            if (element.feature.properties.statusOwner === this.props.user.username || mapAccessLevel >= ApiManager.accessLevels.deleteGeomessages)
+            {
+              claimDisabled = true;
+              doneDisabled = false;
+              doneAdd = false;
+            }
           }
         }
+        else
+        {
+          buttons.push(<div className='pleaseLogin' key='pleaseLoginContainer'><p key='pleaseLogin'>Please login</p></div>);
+        }
+
+        buttons.push(
+        [
+          <Fab
+            key='claim'
+            variant='extended'
+            size='small'
+            className='selection-pane-button'
+            onClick={() => this.onShapeClaim('claim', claimAdd)}
+            disabled={claimDisabled}
+            color={claimAdd ? 'primary' : 'secondary'}
+          >
+            <Flag />
+          </Fab>,
+          <Fab
+            key='done'
+            variant='extended'
+            size='small'
+            className='selection-pane-button'
+            onClick={() => this.onShapeClaim('done', doneAdd)}
+            disabled={doneDisabled}
+            color={doneAdd ? 'primary' : 'secondary'}
+          >
+            <Done />
+          </Fab>
+        ]);
       }
-      else
+      else if (element.feature.properties.layer && element.feature.properties.layer === 'Shea trees')
       {
-        buttons.push(<div className='pleaseLogin' key='pleaseLoginContainer'><p key='pleaseLogin'>Please login</p></div>);
+        title = this.props.localization['Custom polygon'];
+
+        buttons.push([
+          <input
+            ref={this.fileUploadRef}
+            type='file'
+            accept='image/gif, image/jpeg, image/png, image/jpg, .gif, .png, .jpg, .jpeg'
+            id="uploadButton"
+            key='uploadInput'
+            onChange={this.onImageChange}
+            disabled={mapAccessLevel < ApiManager.accessLevels.addGeoMessageImage || !this.props.user}
+          />,
+          <label htmlFor="uploadButton" className="FeauxButton" key='uploadLabel'>
+            <Fab
+              key='geoMessage'
+              variant='extended'
+              size='small'
+              className='selection-pane-button'
+              //onClick={(e) => {this.onElementActionClick(ViewerUtility.dataPaneAction.geoMessage, e)}}
+              disabled={mapAccessLevel < ApiManager.accessLevels.viewGeoMessages}
+              color='primary'
+              component="span"
+              disabled={mapAccessLevel < ApiManager.accessLevels.hasAddImagePermission || !this.props.user}
+            >
+              {this.props.user ? <AddAPhoto /> : 'Please login'}
+            </Fab>
+          </label>,
+          <Fab
+            key='delete'
+            variant='extended'
+            color='primary'
+            size='small'
+            className='selection-pane-button'
+            onClick={() => this.onElementActionClick(DELETE_CUSTOM_POLYGON_ACTION)}
+            disabled={!user || mapAccessLevel < ApiManager.accessLevels.alterOrDeleteCustomPolygons}
+          >
+            <Delete />
+          </Fab>
+        ]);
       }
-
-      buttons.push(
-      [
-        <Fab
-          key='claim'
-          variant='extended'
-          size='small'
-          className='selection-pane-button'
-          onClick={() => this.onShapeClaim('claim', claimAdd)}
-          disabled={claimDisabled}
-          color={claimAdd ? 'primary' : 'secondary'}
-        >
-          <Flag />
-        </Fab>,
-        <Fab
-          key='done'
-          variant='extended'
-          size='small'
-          className='selection-pane-button'
-          onClick={() => this.onShapeClaim('done', doneAdd)}
-          disabled={doneDisabled}
-          color={doneAdd ? 'primary' : 'secondary'}
-        >
-          <Done />
-        </Fab>
-      ]);
-    }
-    else if (element.type === ViewerUtility.customPolygonTileLayerType) {
-      title = this.props.localization['Custom polygon'];
-
-      buttons.push(
-      [<input
-        ref={this.fileUploadRef}
-        type='file'
-        accept='image/gif, image/jpeg, image/png, image/jpg, .gif, .png, .jpg, .jpeg'
-        id="uploadButton"
-        key='uploadInput'
-        onChange={this.onImageChange}
-        disabled={mapAccessLevel < ApiManager.accessLevels.addGeoMessageImage || !this.props.user}
-      />,
-      <label htmlFor="uploadButton" className="FeauxButton" key='uploadLabel'>
-        <Fab
-          key='geoMessage'
-          variant='extended'
-          size='small'
-          className='selection-pane-button'
-          //onClick={(e) => {this.onElementActionClick(ViewerUtility.dataPaneAction.geoMessage, e)}}
-          disabled={mapAccessLevel < ApiManager.accessLevels.viewGeoMessages}
-          color='primary'
-          component="span"
-          disabled={mapAccessLevel < ApiManager.accessLevels.hasAddImagePermission || !this.props.user}
-        >
-          {this.props.user ? <AddAPhoto /> : 'Please login'}
-        </Fab>
-      </label>]
-      );
-
-      buttons.push(
-        /*<Button
-          key='edit'
-          variant='outlined'
-          size='small'
-          className='selection-pane-button'
-          onClick={() => this.onElementActionClick(ViewerUtility.dataPaneAction.editCustomPolygon)}
-          disabled={!user || mapAccessLevel < ApiManager.accessLevels.editOrDeleteCustomPolygons}
-        >
-          {this.props.localization['EDIT']}
-        </Button>,*/
-        <Fab
-          key='delete'
-          variant='extended'
-          color='primary'
-          size='small'
-          className='selection-pane-button'
-          onClick={() => this.onElementActionClick(DELETE_CUSTOM_POLYGON_ACTION)}
-          disabled={!user || mapAccessLevel < ApiManager.accessLevels.alterOrDeleteCustomPolygons}
-        >
-          <Delete />
-        </Fab>
-      );
     }
     else if (element.type === ViewerUtility.drawnPolygonLayerType) {
       title = this.props.localization['Drawn polygon'];
@@ -619,7 +631,7 @@ class SelectionPane extends PureComponent {
           disabled={
             !user ||
             mapAccessLevel < ApiManager.accessLevels.addCustomPolygons ||
-            map.layers.customPolygon.length === 0
+            map.layers.polygon.filter(layer => layer.restricted === false).length === 0
           }
         >
           {this.props.localization['ADD']}
@@ -693,7 +705,7 @@ class SelectionPane extends PureComponent {
             {/*properties*/}
             <ToastContainer
               position="bottom-center"
-              autoClose={2500}
+              autoClose={5000}
               hideProgressBar
               newestOnTop={false}
               closeOnClick

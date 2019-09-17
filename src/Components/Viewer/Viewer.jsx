@@ -77,7 +77,7 @@ class Viewer extends PureComponent {
       leafletMapViewport: DEFAULT_VIEWPORT,
       isSmallWindow: false,
 
-      panes: [CONTROL_PANE_NAME, MAP_PANE_NAME],
+      panes: [/*CONTROL_PANE_NAME,*/ MAP_PANE_NAME],
 
       map: null,
       timestampRange: {
@@ -594,7 +594,7 @@ class Viewer extends PureComponent {
     }
   }
 
-  layerSelectorChange = (type, name, checked) => {
+  layerSelectorChange = (type, name, checked, e) => {
     if (type === ViewerUtility.tileLayerType)
     {
       this.controlsPane.current.tileLayersControl.current.onLayerChange({target: {value: name, checked: !checked}});
@@ -709,8 +709,8 @@ class Viewer extends PureComponent {
                 layerSelector={false}*/
                 map={this.state.map}
                 timestampRange={this.state.timestampRange}
-                layers={this.state.allLayers}
-                onCheckChange={this.onCheckChange}
+                layers={this.state.allLayers ? this.state.allLayers[0] : []}
+                onCheckChange={this.layerSelectorChange}
               />
 
               {this.state.allLayers}

@@ -33,57 +33,57 @@ export default class LayerSelector extends PureComponent {
 
   createCheckbox(name, key, selectedLayers = [])
   {
-    let filter = ['shea trees'];
-
     if(selectedLayers.length === 0){selectedLayers = this.state.selectedLayers};
 
     let checked = selectedLayers.indexOf(name) > -1;
 
-    if (filter.indexOf(name) === -1)
-    {
-      return (
-        <div key={name} className='layer-checkboxes'>
-          <Checkbox
-            key={name}
-            classes={{ root: 'layers-control-checkbox' }}
-            color='primary'
-            value={name}
-            name={name}
-            onChange={() => {this.props.onCheckChange(key, name, checked)}}
-            checked={checked}
-          />
-          <span>
-            {name}
-          </span>
-        </div>
-      );
-    }
+    return (
+      <div key={name} className='layer-checkboxes'>
+        <Checkbox
+          key={'LayerSelector_' + name}
+          classes={{ root: 'layers-control-checkbox' }}
+          color='primary'
+          value={name}
+          name={name}
+          onChange={(e) => {this.props.onCheckChange(key, name, checked, e)}}
+          checked={checked}
+        />
+        <span>
+          {name}
+        </span>
+      </div>
+    );
   }
 
   createCheckboxList(selectedLayers) {
     if(this.props.map && this.props.map.layers)
     {
-      //console.log(this.props.map.layers);
       let selectObjects = [];
     
       let layers = this.props.map.layers;
       for (let key in layers)
       {
         let timestamps = layers[key];
-        //console.log(timestamps)
-  
-        let filtered = timestamps.find((timestamp) => {return key === 'customPolygon' || (timestamp.timestampNumber === this.props.timestampRange.end) ? timestamp : null})
-        //console.log(filtered)
+        let filtered = [];
 
-        if (filtered && key === 'customPolygon')
+        if(key === 'tile')
         {
-          selectObjects.push(this.createCheckbox(filtered.name, key, selectedLayers));
+          filtered = timestamps.filter(timestamp => timestamp.timestampNumber === this.props.timestampRange.end).map(timestamp => timestamp.layers);
         }
-        else if(filtered)
+        else if(key === 'polygon')
         {
-          for (let i = 0; i < filtered.layers.length; i++)
+          filtered = timestamps.filter(timestamp => timestamp.name !== 'Shea trees');
+        }
+
+        if(filtered && filtered.length)
+        {
+          for (let i = 0; i < filtered.length; i++)
           {
-            selectObjects.push(this.createCheckbox(filtered.layers[i].name, key, selectedLayers));
+            if (filtered[i].length)
+            {
+              filtered[i] = filtered[i][0];
+            }
+            selectObjects.push(this.createCheckbox(filtered[i].name, key, selectedLayers));
           }
         }
       }
@@ -101,24 +101,34 @@ export default class LayerSelector extends PureComponent {
       statePush['selectObjects'] = this.createCheckboxList();
     }
 
-    if (this.props.layers[0] !== prevProps.layers[0])
+    if (this.props.layers !== prevProps.layers && this.props.layers.length > 0)
     {
       let selectedLayers = [];
 
-      for (let i = 0; i < this.props.layers[0].length; i++)
+      for (let i = 0; i < this.props.layers.length; i++)
       {
-        if(this.props.layers[0][i] && this.props.layers[0][i].length)
+        if(this.props.layers[i])
+        {
+          this.props.layers[i].length > 0 ? selectedLayers.push(this.props.layers[i][0].props.name) : selectedLayers.push(this.props.layers[i].props.name)
+        }
+      }
+
+
+      /*for (let i = 0; i < this.props.layers[0].length; i++)
+      {
+        if(this.props.layers[0][i] && this.props.layers[0][i].length > 0)
         {
           for (let j = 0; j < this.props.layers[0][i].length; j++)
           {
             selectedLayers.push(this.props.layers[0][i][j].props.name);
           }
         }
-        else if(this.props.layers[0][i])
+        else if(this.props.layers[0][i] && this.props.layers[0][i].props.name)
         {
           selectedLayers.push(this.props.layers[0][i].props.name);
         }
-      }
+      }*/
+
 
       statePush['selectedLayers'] = selectedLayers;
       statePush['selectObjects'] = this.createCheckboxList(selectedLayers);

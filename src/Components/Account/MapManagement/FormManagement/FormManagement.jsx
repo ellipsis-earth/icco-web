@@ -24,7 +24,7 @@ class FormManagment extends PureComponent {
   }
 
   componentDidMount() {
-    ApiManager.fetch('POST', '/geoMessage/getForms', {"mapId": this.props.map.id}, this.props.user)
+    ApiManager.fetch('POST', '/geoMessage/forms/get', {"mapId": this.props.map.id}, this.props.user)
       .then((forms) => {
         forms = [{'formName': this.props.localization["new form"]}].concat(forms)
         this.setState({forms:forms });
