@@ -246,9 +246,11 @@ class PolygonLayersControl extends PureComponent {
 
             let formMessagesPromises = [];
 
-            for (let j = 1; j < 5; j++)
+            let loopLength = Math.ceil(polygonIds.ids.length / 100);
+
+            for (let j = 0; j < loopLength; j++)
             {
-              body.page = j;
+              body.page = (j + 1);
               formMessagesPromises.push(ApiManager.post('/geoMessage/feed', body, this.props.user));
             }
 
@@ -308,7 +310,11 @@ class PolygonLayersControl extends PureComponent {
                 polygonIds: ids[key]
               }
 
-              geometriesPromises.push(body.polygonIds.length > 0 ? ApiManager.post('/geometry/polygons', body, this.props.user) : null);
+              geometriesPromises.push(ApiManager.post('/geometry/polygons', body, this.props.user));
+            }
+            else
+            {
+              geometriesPromises.push({features: []})
             }
           }
 
@@ -361,7 +367,6 @@ class PolygonLayersControl extends PureComponent {
           }
 
           let returnObject = {ids: ids, reserved: reservedIds, done: doneIds};*/
-
           return returnObject;
         })
         .then(polygonsGeoJson => {

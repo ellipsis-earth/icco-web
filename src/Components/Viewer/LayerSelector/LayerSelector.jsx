@@ -31,6 +31,27 @@ export default class LayerSelector extends PureComponent {
     };
   }
 
+  onCheckChange = (key, name, checked, e) => {
+    let selectedLayers = this.state.selectedLayers;
+    let index = selectedLayers.indexOf(name);
+
+    console.log(selectedLayers);
+
+    if (index === -1)
+    {
+      selectedLayers.push(name);
+    }
+    else
+    {
+      selectedLayers.splice(index, 1);
+    }
+
+    console.log(selectedLayers);
+
+    this.setState({selectObjects: this.createCheckboxList(selectedLayers)})
+    this.props.onCheckChange(key, name, checked, e);
+  }
+
   createCheckbox(name, key, selectedLayers = [])
   {
     if(selectedLayers.length === 0){selectedLayers = this.state.selectedLayers};
@@ -45,7 +66,7 @@ export default class LayerSelector extends PureComponent {
           color='primary'
           value={name}
           name={name}
-          onChange={(e) => {this.props.onCheckChange(key, name, checked, e)}}
+          onChange={(e) => {this.onCheckChange(key, name, checked, e)}}
           checked={checked}
         />
         <span>
@@ -113,23 +134,6 @@ export default class LayerSelector extends PureComponent {
         }
       }
 
-
-      /*for (let i = 0; i < this.props.layers[0].length; i++)
-      {
-        if(this.props.layers[0][i] && this.props.layers[0][i].length > 0)
-        {
-          for (let j = 0; j < this.props.layers[0][i].length; j++)
-          {
-            selectedLayers.push(this.props.layers[0][i][j].props.name);
-          }
-        }
-        else if(this.props.layers[0][i] && this.props.layers[0][i].props.name)
-        {
-          selectedLayers.push(this.props.layers[0][i].props.name);
-        }
-      }*/
-
-
       statePush['selectedLayers'] = selectedLayers;
       statePush['selectObjects'] = this.createCheckboxList(selectedLayers);
     }
@@ -161,25 +165,6 @@ export default class LayerSelector extends PureComponent {
         />
         <Collapse in={this.state.expand}>
           <CardContent className={'card-content'}>
-            {/*<ControlsPane
-              key={'controls-pane' + (this.props.map ? ' loaded' : '') + this.state.expand}
-              ref={this.controlsPane}
-              localization={this.props.localization}
-              user={this.props.user}
-              isOpen={this.props.isOpen}
-              leafletMapViewport={this.props.leafletMapViewport}
-              timestampRange={this.props.timestampRange}
-              geolocation={this.props.geolocation}
-              override={this.props.override}
-              onSelectMap={this.props.onSelectMap}
-              onDataPaneAction={this.props.onDataPaneAction}
-              onLayersChange={this.props.onLayersChange}
-              onFeatureClick={this.props.selectFeature}
-              onFlyTo={this.props.onFlyTo}
-              onDeselect={this.props.deselectCurrentElement}
-              layerSelector={true}
-              map={this.props.map}
-            />*/}
             {
               this.state.selectObjects && this.state.selectObjects.length > 0 ?
               this.state.selectObjects : <CircularProgress className='loading-spinner'/>

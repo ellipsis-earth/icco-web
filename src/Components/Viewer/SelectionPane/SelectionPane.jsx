@@ -510,7 +510,8 @@ class SelectionPane extends PureComponent {
     }
     else if (element.type === ViewerUtility.polygonLayerType)
     {
-      title = this.props.localization['Polygon'];
+      title = element.feature.properties.layer;
+      title = title.substring(0, title.length - 1);
       if (element.feature.properties.layer && element.feature.properties.layer === 'Sampled areas')
       {
         let claimDisabled = true;
@@ -573,8 +574,6 @@ class SelectionPane extends PureComponent {
       }
       else if (element.feature.properties.layer && element.feature.properties.layer === 'Shea trees')
       {
-        title = 'Shea Tree';
-
         buttons.push([
           <input
             ref={this.fileUploadRef}
