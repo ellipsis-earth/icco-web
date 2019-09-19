@@ -233,14 +233,14 @@ class PolygonLayersControl extends PureComponent {
             return null;
           }
 
-          let ids = {reserved: null, done: null, ids:polygonIds.ids};
+          let ids = {reserved: [], done: [], ids:polygonIds.ids};
           let properties = {};
 
           if (polygonLayer.name === 'Sampled areas')
           {
             body = {
               mapId: map.id,
-              filters: {forms: ['reserved', 'done'], types: ['polygon']}
+              filters: {forms: ['reserved', 'done'], types: ['polygon'], polygonIds: polygonIds.ids}
             }
 
 
@@ -255,19 +255,23 @@ class PolygonLayersControl extends PureComponent {
             let messagesArray = await Promise.all(formMessagesPromises);
             let messages = Array.prototype.concat.apply([], messagesArray);
 
-            for (let k = 0; k < messages.length; k++)
+            if(messages.length && messages.length > 0)
             {
-              ids[messages[k].form.formName] ? ids[messages[k].form.formName].push(messages[k].elementId) : ids[messages[k].form.formName] = [messages[k].elementId];
-              properties[messages[k].elementId] = {};
-              properties[messages[k].elementId].user = messages[k].user;
-              properties[messages[k].elementId].messageID = messages[k].id;
+
+              for (let k = 0; k < messages.length; k++)
+              {
+                ids[messages[k].form.formName] ? ids[messages[k].form.formName].push(messages[k].elementId) : ids[messages[k].form.formName] = [messages[k].elementId];
+                properties[messages[k].elementId] = {};
+                properties[messages[k].elementId].user = messages[k].user;
+                properties[messages[k].elementId].messageID = messages[k].id;
+              }
+
+              ids['reserved'] = ids['reserved'].filter((x) => {return ids['done'].indexOf(x) === -1});
+
+              let allFilter = [...ids['reserved'], ...ids['done']];
+
+              ids['ids'] = polygonIds.ids.filter((x) => {return allFilter.indexOf(x) === -1});
             }
-
-            ids['reserved'] = ids['reserved'].filter((x) => {return ids['done'].indexOf(x) === -1});
-
-            let allFilter = [...ids['reserved'], ...ids['done']];
-
-            ids['ids'] = polygonIds.ids.filter((x) => {return allFilter.indexOf(x) === -1});
           }
 
 
@@ -296,7 +300,7 @@ class PolygonLayersControl extends PureComponent {
 
           for(let key in ids)
           {
-            if(ids[key])
+            if(ids[key].length && ids[key].length > 0)
             {
               body = {
                 mapId: map.id,

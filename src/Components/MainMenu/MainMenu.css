@@ -3,7 +3,7 @@
   z-index: 1100;
   width: 100vw;
   height: 3.5em;
-  background-color: #333;
+  background-color: #ee7b15;
 }
 
 #main-menu > ul {
@@ -23,8 +23,7 @@
   height: 3.5em;
   width: auto;
   position: relative;
-  padding: 1em;
-  top: -3px;
+  padding: 0.66em;
 }
 
 #main-menu > ul > li a
@@ -33,12 +32,12 @@
 }
 
 #main-menu > ul > li a:hover {
-  border-color: #00a3a3;
+  border-color: #58585a;
 }
 
 #main-menu > ul > li a.active
 {
-  border-color: #00a3a3;
+  border-color: #58585a;
 }
 
 #main-menu > ul > li a.main-menu-logo-item {

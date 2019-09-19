@@ -23,6 +23,9 @@ import DataPane from './DataPane/DataPane';
 import SelectionPane from './SelectionPane/SelectionPane';
 import LayerSelector from './LayerSelector/LayerSelector';
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-draw/dist/leaflet.draw.css';
 
@@ -384,6 +387,7 @@ class Viewer extends PureComponent {
     }
 
     let selectedElement = this.state.selectedElement;
+
     if (selectedElement && selectedElement.type === ViewerUtility.drawnPolygonLayerType) {
       this.removeDrawnPolygon(false)
     }
@@ -580,7 +584,7 @@ class Viewer extends PureComponent {
     if (this.state.panes.includes(MAP_PANE_NAME)) {
 
       if (this.flyToInfo.type === ViewerUtility.flyToType.currentLocation) {
-        this.leafletMap.current.leafletElement.flyTo(this.flyToInfo.target);
+        this.leafletMap.current.leafletElement.flyTo(this.flyToInfo.target, this.state.map.zoom);
       }
       else {
         this.leafletMap.current.leafletElement.flyToBounds(this.flyToInfo.target, { maxZoom: this.state.map.zoom });
@@ -736,6 +740,18 @@ class Viewer extends PureComponent {
           />
 
         </div>
+
+        <ToastContainer
+          position="bottom-center"
+          autoClose={5000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnVisibilityChange={false}
+          draggable
+          pauseOnHover={false}
+        />
 
         <div className='viewer-menu'>
           <div className='button viewer-menu-button' onClick={() => this.openPane(CONTROL_PANE_NAME, true)}>

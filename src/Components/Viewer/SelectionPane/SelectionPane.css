@@ -21,16 +21,17 @@ div.selection-pane-private {
   text-align: left;
 }
 
-/*div.selection-pane-card-actions {
-  display: block;
-}*/
+div.selection-pane-card-actions {
+  padding: 1em;
+  padding-top: 0;
+}
 
 div.specific-actions {
   margin-left: 0px;
 }
 
 button.selection-pane-button {
-  color: #026464;
+  color: #ee7b15;
   width: 42%;
   margin-right: 18px;
   margin-bottom: 8px;
@@ -67,12 +68,12 @@ button.selection-pane-button {
   display: flex;
 }
 
-button.MuiFab-secondary
+.selection-pane .MuiFab-secondary
 {
-  color: #026464;
+  color: #ee7b15;
 }
 
-button.MuiFab-primary
+.selection-pane .MuiFab-primary
 {
   color: white;
 }
@@ -84,7 +85,7 @@ label.FeauxButton span.selection-pane-button
 
 .Toastify__toast--success
 {
-  background-color: #026464;
+  background-color: #ee7b15;
   text-align: center;
 }
 
@@ -102,4 +103,9 @@ label.FeauxButton span.selection-pane-button
 {
   position: absolute;
   right: 18px;
+}
+
+.selection-pane .login
+{
+  flex-grow: 1;
 }

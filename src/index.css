@@ -34,7 +34,7 @@ img {
 }
 
 h1, h2, h3, h4 {
-  color: #026464;
+  color: #ee7b15;
 }
 
 /* Hack to counter-act bootstrap css */
@@ -43,5 +43,5 @@ a.MuiButton-containedPrimary:hover {
 }
 
 a.MuiButton-outlinedPrimary:hover {
-  color: #026464;
+  color: #ee7b15;
 }

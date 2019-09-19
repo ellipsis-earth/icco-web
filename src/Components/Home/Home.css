@@ -1,6 +1,6 @@
 #banner {
     height: 70vh;
-    background-color: #026464;
+    background-color: #ee7b15;
 }
 
 #banner-logo {
@@ -37,7 +37,7 @@
     width: 30%;
     height: 8em;
     float: left;
-    border: 1px solid #026464;
+    border: 1px solid #ee7b15;
     margin: 0.5em;
 }
 
@@ -53,7 +53,7 @@
 
 .featured-table-cell {
     width: 30%;
-    border: 1px solid #026464;
+    border: 1px solid #ee7b15;
 }
 
 .featured-div > img {

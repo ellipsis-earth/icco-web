@@ -58,7 +58,7 @@
 }
 
 .main-block-accented {
-  background-color: #00a3a3;
+  background-color: #ee7b15;
   color: #ffffff;
 }
 
@@ -79,7 +79,7 @@
 }
 
 .main-block-header {
-  background-color: #026464;
+  background-color: #ee7b15;
   padding: 0.3em 0em;
   margin-bottom: 2em;
 
@@ -134,7 +134,7 @@
 }
 
 .key-words {
-  color: #026464;
+  color: #ee7b15;
   font-style: italic;
   font-weight: bold;
 }
@@ -147,8 +147,8 @@ button:focus {
   padding: 0.5em 1em;
   text-align: center;
   background-color: #ffffff;
-  color: #00a3a3;
-  border: 3px solid #026464;
+  color: #ee7b15;
+  border: 3px solid #ee7b15;
   text-decoration: none;
   font-weight: bold;
 
@@ -165,17 +165,17 @@ button:focus {
 }
 
 button.button-selected {
-  background-color: #00a3a3;
+  background-color: #ee7b15;
   color: #ffffff;
 }
 
 .button:hover {
-  background-color: #00a3a3;
+  background-color: #ee7b15;
   color: #ffffff;
 }
 
 .button:hover:enabled {
-    background-color: #00a3a3;
+    background-color: #ee7b15;
     color: #ffffff;
 }
 
@@ -184,13 +184,13 @@ button.button-selected {
 }
 
 .button-accented {
-  border: 3px solid #026464;
+  border: 3px solid #ee7b15;
   background-color: #ffffff;
-  color: #00a3a3
+  color: #ee7b15
 }
 
 .button-accented:hover:enabled {
-  background-color: #00a3a3;
+  background-color: #ee7b15;
   color: #ffffff
 }
 

@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { NavLink } from "react-router-dom";
 
 import {
   Button,
@@ -24,8 +25,7 @@ import ViewerUtility from '../ViewerUtility';
 import './SelectionPane.css';
 import ApiManager from '../../../ApiManager';
 
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
 import { readAndCompressImage } from 'browser-image-resizer';
 const DELETE_CUSTOM_POLYGON_ACTION = 'delete_custom_polygon';
@@ -72,6 +72,7 @@ class SelectionPane extends PureComponent {
         .then(() => {
           this.props.onDeleteCustomPolygon();
           this.props.onDeselect();
+          toast.success('Shea Tree deleted, updating map...');
           this.setState({ isOpen: false, loading: false });
         })
         .catch(err => {
@@ -94,8 +95,6 @@ class SelectionPane extends PureComponent {
     }
     else if(action === 'create_custom_polygon')
     {
-      console.log(action, this.props.element)
-
       let body = {
         mapId: this.props.map.id,
         timestamp: this.props.timestampRange.end,
@@ -105,7 +104,9 @@ class SelectionPane extends PureComponent {
 
       ApiManager.post('/geometry/addPolygon', body, this.props.user)
       .then((result) => {
-        console.log(result)
+        toast.success('Shea Tree added, updating map...');
+        this.props.onDeselect();
+        this.props.onDeleteCustomPolygon();
       })
       .catch(err => {
         toast.error('Error while adding Shea Tree');
@@ -543,10 +544,6 @@ class SelectionPane extends PureComponent {
             }
           }
         }
-        else
-        {
-          buttons.push(<div className='pleaseLogin' key='pleaseLoginContainer'><p key='pleaseLogin'>Please login</p></div>);
-        }
 
         buttons.push(
         [
@@ -576,7 +573,7 @@ class SelectionPane extends PureComponent {
       }
       else if (element.feature.properties.layer && element.feature.properties.layer === 'Shea trees')
       {
-        title = this.props.localization['Custom polygon'];
+        title = 'Shea Tree';
 
         buttons.push([
           <input
@@ -618,7 +615,7 @@ class SelectionPane extends PureComponent {
       }
     }
     else if (element.type === ViewerUtility.drawnPolygonLayerType) {
-      title = this.props.localization['Drawn polygon'];
+      title = 'Draw Shea Tree';
 
       buttons.push(
         <Fab
@@ -668,6 +665,29 @@ class SelectionPane extends PureComponent {
       }
     }
 
+    let content = null;
+
+    if(!this.props.user)
+    {
+      content = 
+      <Fab
+        variant='extended'
+        color='primary'
+        size='small'
+        className='selection-pane-button login'
+        href="/login"
+      >Please login</Fab>
+      
+    }
+    else if (this.state.loading)
+    {
+      content = <CircularProgress className='loading-spinner'/>
+    }
+    else
+    {
+      content = buttons;
+    }
+
     return (
       <div>
         <Card className={selectionPaneClass}>
@@ -703,17 +723,6 @@ class SelectionPane extends PureComponent {
           />
           <CardContent className={'card-content'} key={element.feature.properties.status}>
             {/*properties*/}
-            <ToastContainer
-              position="bottom-center"
-              autoClose={5000}
-              hideProgressBar
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnVisibilityChange={false}
-              draggable
-              pauseOnHover={false}
-            />
           </CardContent>
           <CardActions className={'selection-pane-card-actions'}>
             {/*<div key='first_row_buttons'>
@@ -722,7 +731,7 @@ class SelectionPane extends PureComponent {
             <div key='secont_row_buttons' style={ {marginLeft: '0px' }}>
               {secondRowButtons}
             </div>*/}
-              {this.state.loading ? <CircularProgress className='loading-spinner'/> : buttons}
+              {content}
           </CardActions>
         </Card>
       </div>

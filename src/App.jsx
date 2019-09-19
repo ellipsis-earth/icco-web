@@ -28,7 +28,7 @@ const localStorageUserItem = 'user';
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#026464'
+      main: '#ee7b15'
     },
     secondary: {
       main: '#f5f5f5'
