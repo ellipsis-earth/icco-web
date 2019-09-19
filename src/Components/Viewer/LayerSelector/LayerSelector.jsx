@@ -35,8 +35,6 @@ export default class LayerSelector extends PureComponent {
     let selectedLayers = this.state.selectedLayers;
     let index = selectedLayers.indexOf(name);
 
-    console.log(selectedLayers);
-
     if (index === -1)
     {
       selectedLayers.push(name);
@@ -45,8 +43,6 @@ export default class LayerSelector extends PureComponent {
     {
       selectedLayers.splice(index, 1);
     }
-
-    console.log(selectedLayers);
 
     this.setState({selectObjects: this.createCheckboxList(selectedLayers)})
     this.props.onCheckChange(key, name, checked, e);
