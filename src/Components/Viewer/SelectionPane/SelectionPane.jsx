@@ -312,6 +312,10 @@ class SelectionPane extends PureComponent {
           element.feature.properties.status = 'reserved';
           element.feature.properties.statusOwner = this.props.user.username;
 
+          this.props.element.feature.properties.messageID = result.id;
+          this.props.element.feature.properties.status = 'reserved';
+          this.props.element.feature.properties.statusOwner = this.props.user.username;
+
           this.props.onStatusChange(element);
         })
         .catch(err =>{
@@ -331,6 +335,10 @@ class SelectionPane extends PureComponent {
           delete element.feature.properties.messageID;
           delete element.feature.properties.status;
           delete element.feature.properties.statusOwner;
+
+          delete this.props.element.feature.properties.messageID;
+          delete this.props.element.feature.properties.status;
+          delete this.props.element.feature.properties.statusOwner;
 
           this.props.onStatusChange(element);
         })
@@ -384,6 +392,10 @@ class SelectionPane extends PureComponent {
               element.feature.properties.status = 'done';
               element.feature.properties.statusOwner = this.props.user.username;
 
+              this.props.element.feature.properties.messageID = result.id;
+              this.props.element.feature.properties.status = 'done';
+              this.props.element.feature.properties.statusOwner = this.props.user.username;
+
               this.props.onStatusChange(element);
             })
             .catch(err =>{
@@ -417,6 +429,10 @@ class SelectionPane extends PureComponent {
             element.feature.properties.status = 'done';
             element.feature.properties.statusOwner = this.props.user.username;
 
+            this.props.element.feature.properties.messageID = result.id;
+            this.props.element.feature.properties.status = 'done';
+            this.props.element.feature.properties.statusOwner = this.props.user.username;
+
             this.props.onStatusChange(element);
           })
           .catch(error =>{
@@ -438,6 +454,10 @@ class SelectionPane extends PureComponent {
           delete element.feature.properties.messageID;
           delete element.feature.properties.status;
           delete element.feature.properties.statusOwner;
+
+          delete this.props.element.feature.properties.messageID;
+          delete this.props.element.feature.properties.status;
+          delete this.props.element.feature.properties.statusOwner;
 
           this.props.onStatusChange(element);
         })
@@ -721,7 +741,7 @@ class SelectionPane extends PureComponent {
             }
           />
           <CardContent className={'card-content'} key={element.feature.properties.status}>
-            {/*properties*/}
+            {element.feature.properties.layer === 'districts' ? properties : null}
           </CardContent>
           <CardActions className={'selection-pane-card-actions'}>
             {/*<div key='first_row_buttons'>
