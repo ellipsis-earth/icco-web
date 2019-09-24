@@ -704,7 +704,7 @@ class Viewer extends PureComponent {
               </Control>
 
               <Control position="bottomright">
-                <Button variant='contained' color='secondary' onClick={() => {window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ','_blank');}}><InfoIcon /></Button>
+                <Button variant='contained' color='secondary' onClick={() => {window.open('https://youtu.be/5KXOH6HMLeM','_blank');}}><InfoIcon /></Button>
               </Control>
 
               <LayerSelector
