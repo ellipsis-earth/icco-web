@@ -40,7 +40,7 @@ class App extends Component {
 
   constructor(props, context) {
     super(props, context)
-    document.title = 'ICCO - Shea Tree Viewer';
+    document.title = 'Shea Tree Monitor';
 
     this.state = {
       init: false,
