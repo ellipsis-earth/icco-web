@@ -290,6 +290,10 @@ class StandardTileLayersControl extends PureComponent {
     ViewerUtility.download(fileName, JSON.stringify(this.standardTilesGeoJson.geoJson), 'application/json');
   }
 
+  returnSelectedLayers = () => {
+    return this.state.selectedLayers;
+  }
+
   render() {
     if (!this.props.map || this.state.availableLayers.length === 0) {
       return null;

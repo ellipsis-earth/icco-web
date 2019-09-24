@@ -280,6 +280,7 @@ class Viewer extends PureComponent {
       },
       overrideLeafletLayers: null
     }, () => {
+      //this.getSelectedLayers();
       this.onFlyTo({ type: ViewerUtility.flyToType.map, delay: true });
     });
   }
@@ -607,6 +608,17 @@ class Viewer extends PureComponent {
     {
       this.controlsPane.current.polygonLayersControl.current.onLayerChange({target: {value: name, checked: !checked}});
     }
+
+    //this.getSelectedLayers();
+  }
+
+  getSelectedLayers = () => {
+    let selectedTileLayers = this.controlsPane.current.tileLayersControl.current.returnSelectedLayers();
+    let selectedPolygonLayers = this.controlsPane.current.polygonLayersControl.current.returnSelectedLayers();
+
+    let selectedLayers = [...selectedTileLayers, ...selectedPolygonLayers];
+
+    this.setState({selectedLayers: selectedLayers});
   }
 
   onStatusChange = (element) => {
@@ -696,27 +708,12 @@ class Viewer extends PureComponent {
               </Control>
 
               <LayerSelector
-                /*ref={this.controlsPane}
-                localization={this.props.localization}
-                user={this.props.user}
-                isOpen={this.state.panes.includes(CONTROL_PANE_NAME)}
-                leafletMapViewport={this.state.leafletMapViewport}
-                
-                geolocation={this.state.geolocation}
-                override={this.state.overrideLeafletLayers ? true : false}
-                onSelectMap={this.onSelectMap}
-                onDataPaneAction={this.onDataPaneAction}
-                onLayersChange={this.onLayersChange}
-                onFeatureClick={this.selectFeature}
-                onFlyTo={this.onFlyTo}
-                onDeselect={this.deselectCurrentElement}
-                layerSelector={false}*/
                 map={this.state.map}
                 timestampRange={this.state.timestampRange}
                 layers={this.state.allLayers ? this.state.allLayers[0] : []}
                 onCheckChange={this.layerSelectorChange}
+                selectedLayers={this.state.selectedLayers}
               />
-
               {this.state.allLayers}
               {this.state.geolocation ? <Marker position={this.state.geolocation}/> : null}
             </Map>

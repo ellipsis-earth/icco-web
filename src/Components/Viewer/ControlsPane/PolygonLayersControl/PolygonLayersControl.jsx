@@ -276,28 +276,6 @@ class PolygonLayersControl extends PureComponent {
             }
           }
 
-
-          /*let formMessages = await ApiManager.post('/geoMessage/feed', body, this.props.user);
-
-          while (formMessages.length > 0)
-          {
-            for (let i = 0; i < formMessages.length; i++)
-            {
-              formMessages[i].form.formName === 'reserved' ? reserved.push(formMessages[i].elementId) : done.push(formMessages[i].elementId);
-              properties[formMessages[i].elementId] = {};
-              properties[formMessages[i].elementId].user = formMessages[i].user;
-              properties[formMessages[i].elementId].messageID = formMessages[i].id;
-            }
-
-            body.page = body.page + 1;
-            formMessages = await ApiManager.post('/geoMessage/feed', body, this.props.user)
-          }*/
-
-          /*reserved = reserved.filter((x) => {return done.indexOf(x) === -1});
-
-          let allFilter = [...reserved, ...done];
-
-          polygonIds.ids = polygonIds.ids.filter((x) => {return allFilter.indexOf(x) === -1});*/
           let geometriesPromises = [];
 
           for(let key in ids)
@@ -343,30 +321,6 @@ class PolygonLayersControl extends PureComponent {
             returnObject[key] = geometries[l];
           }
 
-
-          //let ids = body.polygonIds.length > 0 ? await ApiManager.post('/geometry/polygons', body, this.props.user) : [];
-
-          /*body.polygonIds = reserved;
-          let reservedIds = body.polygonIds.length > 0 ? await ApiManager.post('/geometry/polygons', body, this.props.user) : [];
-
-          body.polygonIds = done;
-          let doneIds = body.polygonIds.length > 0 ? await ApiManager.post('/geometry/polygons', body, this.props.user) : [];
-
-          for (let i = 0; i < reservedIds.features.length; i++)
-          {
-            reservedIds.features[i].properties.status = 'reserved';
-            reservedIds.features[i].properties.statusOwner = properties[reservedIds.features[i].id].user;
-            reservedIds.features[i].properties.messageID = properties[reservedIds.features[i].id].messageID;
-          }
-
-          for (let i = 0; i < doneIds.features.length; i++)
-          {
-            doneIds.features[i].properties.status = 'done';
-            doneIds.features[i].properties.statusOwner = properties[doneIds.features[i].id].user;
-            doneIds.features[i].properties.messageID = properties[doneIds.features[i].id].messageID;
-          }
-
-          let returnObject = {ids: ids, reserved: reservedIds, done: doneIds};*/
           return returnObject;
         })
         .then(polygonsGeoJson => {
@@ -381,31 +335,34 @@ class PolygonLayersControl extends PureComponent {
 
           for(let key in polygonsGeoJson)
           {
-            this.layerGeoJsons[polygonLayer.name] = {
-              geoJson: polygonsGeoJson[key],
-              bounds: bounds
-            };
-
-            let color = '#' + polygonLayer.color;
-            if(key === 'reserved')
+            if (polygonsGeoJson[key].features.length > 0)
             {
-              color = '#ff7f00ff';
-            }
-            else if(key === 'done')
-            {
-              color = '#00ff00ff';
-            }
+              this.layerGeoJsons[polygonLayer.name] = {
+                geoJson: polygonsGeoJson[key],
+                bounds: bounds
+              };
 
-            geoJsons.push(
-              <GeoJSON
-                key={Math.random()}
-                name={polygonLayer.name}
-                data={polygonsGeoJson[key]}
-                style={ViewerUtility.createGeoJsonLayerStyle(color)}
-                zIndex={ViewerUtility.polygonLayerZIndex + i}
-                onEachFeature={(feature, layer) => layer.on({ click: () => this.onFeatureClick(feature, polygonLayer.hasAggregatedData) })}
-              />
-            );
+              let color = '#' + polygonLayer.color;
+              if(key === 'reserved')
+              {
+                color = '#ff7f00ff';
+              }
+              else if(key === 'done')
+              {
+                color = '#00ff00ff';
+              }
+
+              geoJsons.push(
+                <GeoJSON
+                  key={Math.random()}
+                  name={polygonLayer.name}
+                  data={polygonsGeoJson[key]}
+                  style={ViewerUtility.createGeoJsonLayerStyle(color)}
+                  zIndex={ViewerUtility.polygonLayerZIndex + i}
+                  onEachFeature={(feature, layer) => layer.on({ click: () => this.onFeatureClick(feature, polygonLayer.hasAggregatedData) })}
+                />
+              );
+            }
 
             i++;
           }
@@ -446,13 +403,14 @@ class PolygonLayersControl extends PureComponent {
       changed = true;
     }
 
-    if (changed) {
-      this.setState({ selectedLayers: newSelectedLayers });
 
-      this.prepareLayers(this.props.map, this.props.timestampRange, this.state.availableLayers, newSelectedLayers)
+    if (changed) {
+      this.setState({ selectedLayers: newSelectedLayers }, () => {
+        this.prepareLayers(this.props.map, this.props.timestampRange, this.state.availableLayers, newSelectedLayers)
         .then(polygonsGeoJson => {
           this.props.onLayersChange(polygonsGeoJson);
-        });
+        })
+      });
     }
   }
 
@@ -488,6 +446,10 @@ class PolygonLayersControl extends PureComponent {
     let fileName = nameComponents.join('_').replace(' ', '_') + '.geojson';
 
     ViewerUtility.download(fileName, JSON.stringify(data.geoJson), 'application/json');
+  }
+
+  returnSelectedLayers = () => {
+    return this.state.selectedLayers;
   }
 
   render() {

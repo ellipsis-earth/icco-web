@@ -95,10 +95,15 @@ class SelectionPane extends PureComponent {
     }
     else if(action === 'create_custom_polygon')
     {
+      let feature = JSON.parse(JSON.stringify(this.props.element.feature));
+      delete feature.properties.id;
+      delete feature.properties.user;
+      delete feature.properties.layer;
+
       let body = {
         mapId: this.props.map.id,
         timestamp: this.props.timestampRange.end,
-        feature: this.props.element.feature,
+        feature: feature,
         layer: 'Shea trees',
       }
 
@@ -115,22 +120,6 @@ class SelectionPane extends PureComponent {
     else
     {
       console.log(action, this.props.element)
-
-      /*if (action === 'geoMessage')
-      {
-        this.onImageChange(e)
-      }
-      else*/ /*if(action === 'claim')
-      {
-        this.onShapeClaim()
-      }*/
-
-      //geomessage
-      //claim
-      //create_custom_polygon
-
-
-      //this.props.onDataPaneAction(action);
     }
   }
 

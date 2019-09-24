@@ -329,6 +329,10 @@ class TileLayersControl extends PureComponent {
     this.setState({ expanded: !this.state.expanded });
   }
 
+  returnSelectedLayers = () => {
+    return this.state.selectedLayers;
+  }
+
   render() {
 
     if (!this.props.map) {
