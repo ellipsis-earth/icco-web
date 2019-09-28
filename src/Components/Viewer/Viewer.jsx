@@ -100,7 +100,7 @@ class Viewer extends PureComponent {
 
   initializeDrawingControl = () => {
     let map = this.leafletMap.current.leafletElement;
-  
+
     let drawControl = new L.Control.Draw({
       draw: {
         polygon: {
@@ -114,7 +114,7 @@ class Viewer extends PureComponent {
       },
       edit: false
     });
-    
+
     map.addControl(drawControl);
     map.on(L.Draw.Event.CREATED, this.onShapeDrawnClosure);
 
@@ -122,17 +122,17 @@ class Viewer extends PureComponent {
 
   componentDidMount() {
     navigator.geolocation.getCurrentPosition(
-      this.setLocation, 
+      this.setLocation,
       (err) => {
         console.warn(`Error ${err.code}: ${err.message}`);
         this.setLocation(null);
-      }, 
+      },
       { enableHighAccuracy: true }
     );
 
     this.onLeafletMapViewportChanged(DEFAULT_VIEWPORT);
 
-    window.addEventListener('resize', this.onWindowResize);  
+    window.addEventListener('resize', this.onWindowResize);
     this.onWindowResize(null, () => {
       let panes = this.state.panes;
       if (panes.length > 1 && this.state.isSmallWindow) {
@@ -146,8 +146,8 @@ class Viewer extends PureComponent {
   }
 
   setLocation = (position) => {
-    if (position) {      
-      if (!this.state.geolocation || this.state.geolocation.latitude !== position.coords.latitude || 
+    if (position) {
+      if (!this.state.geolocation || this.state.geolocation.latitude !== position.coords.latitude ||
         this.state.geolocation.longitude !== position.coords.longitude) {
           let newGeolocation = [position.coords.latitude, position.coords.longitude];
           this.setState({ geolocation: newGeolocation });
@@ -156,21 +156,21 @@ class Viewer extends PureComponent {
 
     setTimeout(() => {
         navigator.geolocation.getCurrentPosition(
-          this.setLocation, 
+          this.setLocation,
           (err) => {
             console.warn(`Error ${err.code}: ${err.message}`);
             this.setLocation(null);
-          }, 
+          },
           { enableHighAccuracy: true }
         );
-      }, 
+      },
       1000 * 10
     );
   }
 
   onWindowResize = (_, cb) => {
     let isSmallWindow = window.innerWidth <= 700;
-    
+
     if (this.state.isSmallWindow !== isSmallWindow) {
       this.setState({ isSmallWindow: isSmallWindow }, () => {
         this.openPane(MAP_PANE_NAME, isSmallWindow);
@@ -186,7 +186,7 @@ class Viewer extends PureComponent {
 
   onShapeDrawnClosure = (e) => {
     let layer = e.layer;
-    
+
     let geoJson = layer.toGeoJSON();
     geoJson.geometry.type = 'MultiPolygon';
     geoJson.geometry.coordinates = [geoJson.geometry.coordinates];
@@ -197,7 +197,7 @@ class Viewer extends PureComponent {
         return;
       }
 
-      this.selectFeature(ViewerUtility.drawnPolygonLayerType, geoJson, true);    
+      this.selectFeature(ViewerUtility.drawnPolygonLayerType, geoJson, true);
     }
 
     let drawnPolygonLayer = (
@@ -215,14 +215,14 @@ class Viewer extends PureComponent {
       dataPaneAction = null;
     }
 
-    this.setState({ 
+    this.setState({
       drawnPolygonLayer: drawnPolygonLayer ,
       dataPaneAction: dataPaneAction
     }, () => {
       this.rebuildAllLayers();
       selectDrawnPolygon();
-    });    
-  }  
+    });
+  }
 
   openPane = (paneName, closePane) => {
     let currentPanes = this.state.panes;
@@ -270,7 +270,7 @@ class Viewer extends PureComponent {
       dataPaneAction = null;
     }
 
-    this.setState({ 
+    this.setState({
       map: map,
       dataPaneAction: dataPaneAction,
       selectedElement: null,
@@ -296,7 +296,7 @@ class Viewer extends PureComponent {
   }
 
   onSelectTimestamp = (timestampRange) => {
-    if (this.state.timestampRange.start !== timestampRange.start || 
+    if (this.state.timestampRange.start !== timestampRange.start ||
       this.state.timestampRange.end !== timestampRange.end) {
 
       if (this.selectTimestampTimer) {
@@ -314,14 +314,14 @@ class Viewer extends PureComponent {
 
     if (this.setNewViewportTimer) {
       clearTimeout(this.setNewViewportTimer);
-    }    
+    }
 
     viewport.bounds = getLeafletMapBounds(this.leafletMap);
 
     this.setNewViewportTimer = setTimeout(
-      () => { this.setState({ leafletMapViewport: viewport }) }, 
+      () => { this.setState({ leafletMapViewport: viewport }) },
       400
-    );    
+    );
   }
 
   selectFeature = (type, feature, hasAggregatedData, color, cb) => {
@@ -351,14 +351,14 @@ class Viewer extends PureComponent {
       else if (type === ViewerUtility.customPolygonTileLayerType) {
         layerCollection = map.layers.customPolygon;
       }
-  
+
       if (layerCollection) {
         let layerName = feature.properties.layer;
         let layer = layerCollection.find(x => x.name === layerName);
-  
+
         color = '#ff00ff80';
       }
-    }   
+    }
 
     let selectedElementLayer = (
       <GeoJSON
@@ -412,12 +412,12 @@ class Viewer extends PureComponent {
 
   rebuildAllLayers = () => {
     let allLayers = [
-      this.leafletLayers, 
+      this.leafletLayers,
       this.state.overrideLeafletLayers,
-      this.selectedElementLayer, 
+      this.selectedElementLayer,
       this.drawnPolygonLayer,
     ];
-    
+
     this.setState({ allLayers: allLayers });
   }
 
@@ -425,7 +425,7 @@ class Viewer extends PureComponent {
     this.controlsPane.current.updateCustomPolygons();
   }
 
-  onDataPaneAction = (action, jumpToMessage) => {    
+  onDataPaneAction = (action, jumpToMessage) => {
     // console.log(`On data pane action: ${action} ${jumpToMessage.id}`);
 
     let cb = () => {
@@ -436,7 +436,7 @@ class Viewer extends PureComponent {
       }
       else {
         this.setState({ dataPaneAction: action, jumpToMessage: jumpToMessage });
-      } 
+      }
     }
 
     this.setState({ jumpToMessage: jumpToMessage }, cb);
@@ -484,7 +484,7 @@ class Viewer extends PureComponent {
 
           let geoJsonLayer = L.geoJSON(geoJson);
           let bounds = geoJsonLayer.getBounds();
-          
+
           flyToInfo.target = bounds;
           flyToInfo.layerType = flyToInfo.type;
 
@@ -557,7 +557,7 @@ class Viewer extends PureComponent {
 
   onCustomPolygonChange = (removeDrawnPolygon, updateSelection, newProperties) => {
     if (removeDrawnPolygon) {
-      this.removeDrawnPolygon(true); 
+      this.removeDrawnPolygon(true);
     }
 
     if (updateSelection) {
@@ -578,7 +578,7 @@ class Viewer extends PureComponent {
   }
 
   attemptFlyTo = () => {
-    if (!this.flyToInfo || !this.flyToInfo.target) {  
+    if (!this.flyToInfo || !this.flyToInfo.target) {
       return;
     }
 
@@ -647,7 +647,7 @@ class Viewer extends PureComponent {
     }
 
     return (
-      <div className='viewer'>        
+      <div className='viewer'>
         <div className='viewer-main-container'>
           <ControlsPane
             ref={this.controlsPane}
@@ -666,7 +666,7 @@ class Viewer extends PureComponent {
             onDeselect={this.deselectCurrentElement}
             getSelectedLayers={this.getSelectedLayers}
           />
-          
+
           <div className='viewer-pane map-pane' style={mapPaneStyle}>
             <TimestampSelector
               localization={this.props.localization}
@@ -686,11 +686,11 @@ class Viewer extends PureComponent {
               timestampRange={this.state.timestampRange}
               onStatusChange={this.onStatusChange}
             />
-            <Map 
-              center={DEFAULT_VIEWPORT.center} 
+            <Map
+              center={DEFAULT_VIEWPORT.center}
               zoom={DEFAULT_VIEWPORT.zoom}
               ref={this.leafletMap}
-              maxZoom={19}
+              maxZoom={22}
               onViewportChanged={this.onLeafletMapViewportChanged}
             >
               <Control position="topleft" >
@@ -758,12 +758,12 @@ class Viewer extends PureComponent {
           </div>
           <div className='button viewer-menu-button' onClick={() => this.openPane(MAP_PANE_NAME, true)}>
             <div className='viewer-menu-button-content'>
-              {this.props.localization['ViewerMapPane']}           
+              {this.props.localization['ViewerMapPane']}
             </div>
           </div>
           <div className='button viewer-menu-button' onClick={() => this.openPane(DATA_PANE_NAME, true)}>
             <div className='viewer-menu-button-content'>
-              {this.props.localization['ViewerDataPane']}        
+              {this.props.localization['ViewerDataPane']}
             </div>
           </div>
         </div>
@@ -774,7 +774,7 @@ class Viewer extends PureComponent {
 
 function getLeafletMapBounds(leafletMap) {
   let screenBounds = leafletMap.current.leafletElement.getBounds();
-  let bounds = 
+  let bounds =
   {
     xMin: screenBounds.getWest(),
     xMax: screenBounds.getEast(),
