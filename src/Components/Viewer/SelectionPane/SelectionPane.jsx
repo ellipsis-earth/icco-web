@@ -615,7 +615,7 @@ class SelectionPane extends PureComponent {
             size='small'
             className='selection-pane-button'
             onClick={() => this.onElementActionClick(DELETE_CUSTOM_POLYGON_ACTION)}
-            disabled={!user || mapAccessLevel < ApiManager.accessLevels.alterOrDeleteCustomPolygons}
+            disabled={!user || !(mapAccessLevel >= ApiManager.accessLevels.alterOrDeleteCustomPolygons || element.feature.properties.user === user.username)}
           >
             <Delete />
           </Fab>

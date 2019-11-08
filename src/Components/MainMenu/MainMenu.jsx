@@ -1,35 +1,70 @@
-import React, { Component } from "react";
-import { NavLink } from "react-router-dom";
+import React, { Component } from 'react';
+import {
+  Button,
+} from '@material-ui/core';
+import { ToggleButton } from '@material-ui/lab';
+import { NavLink } from 'react-router-dom';
 
-import "./MainMenu.css";
+import { Navbar, Nav, NavItem } from 'react-bootstrap';
+
+import './MainMenu.css';
+
+const navKeys = {
+  login: 'login'
+}
 
 export class MainMenu extends Component {
   constructor(props, context) {
     super(props, context)
     this.state = {
+      expanded: false,
       hidden: false,
+      navKey: 'home'
     };
   }
 
   componentDidMount = () => {
+    this.checkUrl();
+  }
 
+  componentDidUpdate = () => {
+    this.checkUrl();
+  }
+
+  checkUrl = () => {
+    let url = window.location.href;
+
+    try {
+      for (let key in navKeys) {
+        if (Object.prototype.hasOwnProperty.call(navKeys, key)) {
+          let navKey = navKeys[key];
+
+          if (url.includes(`/${navKey}`)) {
+            if (this.state.navKey !== navKey) {
+              this.setState({ navKey: navKey });
+            }
+            break;
+          }
+        }
+      }
+    }
+    catch (err) {
+      console.log(`Could not identify navkey from url: ${url}`);
+      console.error(err);
+    }
   }
 
   toggleMenu = (event) => {
-    var x = document.getElementById("main-menu");
-    if (x.className === "") {
-      x.className = "responsive";
+    var x = document.getElementById('main-menu');
+    if (x.className === '') {
+      x.className = 'responsive';
     }
     else {
-      x.className = "";
+      x.className = '';
     }
 
     event.stopPropagation();
   }
-
-  // logout = () => {
-  //   this.props.onLogout();
-  // }
 
   changeLanguage = (language) => {
     if (this.props.onLanguageChange) {
@@ -37,81 +72,51 @@ export class MainMenu extends Component {
     }
   }
 
+  onToggle = (expanded) => {
+    this.setState({ expanded: expanded })
+  }
+
+  onNavItemClick = (key) => {
+    this.setState({ navKey: key });
+    this.onToggle(false);
+  }
+
   render() {
     let displayStyle = {
-        display: "block"
+        display: 'block'
     };
 
     if (this.state.hidden) {
-        displayStyle.display = "hidden";
+        displayStyle.display = 'hidden';
+    }
+
+    let navItemClass = (navKey) => {
+      // return navKey === this.state.navKey ? 'nav-item-active' : '';
+      return navKey === this.state.navKey;
     }
 
     return (
-      <div id="main-menu" style={displayStyle}>
-        <ul>
-          <li>
-            <NavLink exact to="/" className="main-menu-logo-item">
-              <img className="main-menu-logo" src="/images/logo-white.png" alt="Ellipsis Earth Intelligence logo white"/>
+      <div id='main-menu' style={displayStyle}>
+        <Navbar
+          className={this.state.expanded ? 'main-menu' : 'main-menu main-menu-collapsed'}
+          variant='dark'
+          expand='md'
+          expanded={this.state.expanded}
+          onToggle={this.onToggle}
+        >
+          <Navbar.Brand>
+            <NavLink exact to='/' className='main-menu-logo-item noselect' onClick={() => {this.props.openAccounts(false); this.onNavItemClick('home')}}>
+              <img className='main-menu-logo' src='/images/logo-white.png' alt='Ellipsis Earth Intelligence'/>
             </NavLink>
-          </li>
-          {/*<li>
-            <NavLink to="/products" className="main-menu-item">
-              {this.props.localization['Products']}
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/viewer" className="main-menu-item">
-              {this.props.localization['Viewer']}
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/gallery" className="main-menu-item">
-              {this.props.localization['Gallery']}
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/sectors" className="main-menu-item">
-              {this.props.localization['Sectors']}
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/about" className="main-menu-item">
-              {this.props.localization['AboutUs']}
-            </NavLink>
-          </li>
-          <li style={{float: "right", display: 'block'}}>
-            <div className="main-menu-item dropdown" style={{ width: '100%'}}>
-              <button className="dropbtn">
-                <img src='/images/language.png' style={{width: '25%', verticalAlign: 'middle'}}/>
-              </button>
-              <div className="dropdown-content">
-                <a href="#" onClick={() => this.changeLanguage('english')}>English</a>
-                <a href="#" onClick={() => this.changeLanguage('spanish')}>Español</a>
-                <a href="#" onClick={() => this.changeLanguage('dutch')}>Nederlands</a>
-              </div>
-            </div>
-          </li>*/}
-          <li style={{display: this.props.user ? 'none' : 'block', float: "right"}}>
-            <NavLink to="/login" className="main-menu-item">
-              <span >
-                {this.props.localization['Login']}
-              </span>
-            </NavLink>
-          </li>
-
-          {/* <li style={{display: this.props.user ? 'block' : 'none', float: "right"}}>
-            <a className='main-menu-item' style={{cursor: 'pointer'}} onClick={this.logout.bind(this)}>Logout</a>
-          </li> */}
-
-          <li style={{display: this.props.user ? 'block' : 'none', float: "right"}}>
-            <NavLink to="/account/management" className="main-menu-item">
-              {this.props.user ? this.props.user.username : ''}
-            </NavLink>
-          </li>
-        </ul>
-        <a href={void(0)} className="icon" onClick={this.toggleMenu}>
-          <img alt="hamburger-menu" src="/images/three-lines.png"></img>
-        </a>
+          </Navbar.Brand>
+            <Nav>
+              <NavItem>
+                <ToggleButton selected={navItemClass(navKeys.login)} value={this.props.user ? this.props.user.username : 'Login'} onClick={() => this.props.openAccounts()}>
+                  {this.props.user ? this.props.user.username : 'Login'}
+                </ToggleButton>
+              </NavItem>
+            </Nav>
+        </Navbar>
       </div>
     )
   }

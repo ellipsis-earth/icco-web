@@ -45,9 +45,11 @@ class App extends Component {
     this.state = {
       init: false,
       hideMenu: false,
-
+      accountOpen: false,
       user: null,
     };
+
+    this.accountsUrl = 'https://account.ellipsis-earth.com/';
   }
 
   componentDidMount() {
@@ -61,6 +63,35 @@ class App extends Component {
       .then(() => {
         return this.retrieveUser();
       });
+
+    window.addEventListener("message", this.receiveMessage, false);
+  }
+
+  receiveMessage = (event) => {
+  if (/*event.origin === 'http://localhost:3000' ||*/ 'https://account.ellipsis-earth.com') 
+    {
+      if (event.data.type && event.data.type === 'login')
+      {
+        this.onLogin(event.data.data);
+      }
+      if (event.data.type && event.data.type === 'logout')
+      {
+        this.onLogout();
+      }
+      if (event.data.type && event.data.type === 'overlayClose')
+      {
+        this.setState({accountOpen: false}, this.setHome())
+      }
+    }
+  }
+
+  setHome = () => {
+    let iframe = document.getElementById("account");
+    iframe.contentWindow.postMessage({type: 'home'}, this.accountsUrl);
+  }
+
+  openAccounts = (open = !this.state.accountOpen) => {
+    this.setState({accountOpen: open})
   }
 
   closeMenu = () => {
@@ -144,6 +175,14 @@ class App extends Component {
       return null;
     }
 
+    if (this.state.accountOpen)
+    {
+      let initObject = {type: 'init'};
+      if (this.state.user){initObject.data = this.state.user}
+      let iframe = document.getElementById("account");
+      iframe.contentWindow.postMessage(initObject, this.accountsUrl);
+    }
+
     let contentClassName = 'content';
     if (this.state.hideMenu) {
       contentClassName += ' content-full';
@@ -160,6 +199,7 @@ class App extends Component {
                 language={this.state.language}
                 localization={this.state.localization}
                 onLanguageChange={this.onLanguageChange}
+                openAccounts={this.openAccounts}
               />
           }
 
@@ -178,6 +218,7 @@ class App extends Component {
                   user={this.state.user}
                   language={this.state.language}
                   localization={this.state.localization}
+                  key={this.state.user ? this.state.user.name : 'default'}
                 />
               }
             />
@@ -237,6 +278,9 @@ class App extends Component {
                 />
               }
             />
+            <div className={this.state.accountOpen ? 'account' : 'hidden'}>
+              <iframe src={this.accountsUrl} id='account'/>
+            </div>
           </div>
         </ThemeProvider>          
       </div>
