@@ -685,6 +685,7 @@ class Viewer extends PureComponent {
               onDeleteCustomPolygon={this.updateCustomPolygons}
               timestampRange={this.state.timestampRange}
               onStatusChange={this.onStatusChange}
+              openAccounts={this.props.openAccounts}
             />
             <Map
               center={DEFAULT_VIEWPORT.center}

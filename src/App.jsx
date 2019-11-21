@@ -28,10 +28,12 @@ const localStorageUserItem = 'user';
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#ee7b15'
+      main: '#ee7b15',
+      contrastText: "#fff"
     },
     secondary: {
-      main: '#f5f5f5'
+      main: '#f5f5f5',
+      contrastText: "#000"
     }
   },
 });
@@ -219,6 +221,7 @@ class App extends Component {
                   language={this.state.language}
                   localization={this.state.localization}
                   key={this.state.user ? this.state.user.name : 'default'}
+                  openAccounts={this.openAccounts}
                 />
               }
             />

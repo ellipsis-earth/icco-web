@@ -637,8 +637,8 @@ class GeoMessageControl extends PureComponent {
 
     if (rawGeoMessages.length === 0) {
       return (
-        <div>
-          No messages.
+        <div className='noPhotos'>
+          No photos in gallery.
         </div>
       );
     }
@@ -801,14 +801,14 @@ class GeoMessageControl extends PureComponent {
         </Card>
         {
           !isFeed ?
-            <GeoMessageForm
+            /*<GeoMessageForm
               localization={this.props.localization}
               user={this.props.user}
               map={this.props.map}
               timestampRange={this.props.timestampRange}
               element={this.props.element}
               onNewMessage={this.onNewMessage}
-            /> : null
+            />*/ null : null
         }
 
       </div>

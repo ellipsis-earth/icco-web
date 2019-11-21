@@ -46,6 +46,11 @@ div.geomessage-form-card-item {
   margin-top: 12px;
 }
 
+.geomessage-control .geomessage-messages-card .noPhotos
+{
+  padding: 1em;
+}
+
 @media only screen and (max-width: 930px) {
   button.geomessage-add-expand-button {
     font-size: 10px;

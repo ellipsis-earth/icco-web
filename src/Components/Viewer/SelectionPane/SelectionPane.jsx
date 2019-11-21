@@ -8,7 +8,9 @@ import {
   CardHeader,
   CardContent,
   CardActions,
+  Checkbox,
   IconButton,
+  FormControlLabel,
   Typography,
   CircularProgress,
   Fab,
@@ -19,6 +21,7 @@ import AddAPhoto from '@material-ui/icons/AddAPhoto';
 import Delete from '@material-ui/icons/Delete';
 import Done from '@material-ui/icons/Done';
 import Flag from '@material-ui/icons/Flag';
+import PhotoLibrary from '@material-ui/icons/PhotoLibrary';
 
 import ViewerUtility from '../ViewerUtility';
 
@@ -41,6 +44,7 @@ class SelectionPane extends PureComponent {
     this.state = {
       isOpen: false,
       loading: false,
+      fruiting: false,
     };
   }
 
@@ -93,12 +97,14 @@ class SelectionPane extends PureComponent {
     if (action === DELETE_CUSTOM_POLYGON_ACTION) {
       this.deleteCustomPolygon();
     }
-    else if(action === 'create_custom_polygon')
+    else if(action === ViewerUtility.dataPaneAction.createCustomPolygon)
     {
       let feature = JSON.parse(JSON.stringify(this.props.element.feature));
       delete feature.properties.id;
       delete feature.properties.user;
       delete feature.properties.layer;
+
+      feature.properties.fruiting = this.state.fruiting;
 
       let body = {
         mapId: this.props.map.id,
@@ -107,7 +113,7 @@ class SelectionPane extends PureComponent {
         layer: 'Shea trees',
       }
 
-      ApiManager.post('/geometry/addPolygon', body, this.props.user)
+      ApiManager.post('/geometry/add', body, this.props.user, 'v2')
       .then((result) => {
         toast.success('Shea Tree added, updating map...');
         this.props.onDeselect();
@@ -119,7 +125,14 @@ class SelectionPane extends PureComponent {
     }
     else
     {
-      console.log(action, this.props.element)
+      if (action === ViewerUtility.dataPaneAction.geoMessage)
+      {
+        this.props.onDataPaneAction(ViewerUtility.dataPaneAction.geoMessage)
+      }
+      else
+      {
+        console.log(action, this.props.element)
+      }
     }
   }
 
@@ -484,6 +497,8 @@ class SelectionPane extends PureComponent {
 
     let buttons = [];
 
+    let questions = [];
+
     /*firstRowButtons.push(
       <Button
         key='analyse'
@@ -609,6 +624,17 @@ class SelectionPane extends PureComponent {
             </Fab>
           </label>,
           <Fab
+            key='geoMessage'
+            variant='extended'
+            size='small'
+            className='selection-pane-button'
+            onClick={() => this.onElementActionClick(ViewerUtility.dataPaneAction.geoMessage)}
+            disabled={mapAccessLevel < ApiManager.accessLevels.viewGeoMessages}
+            color='primary'
+          >
+            {<PhotoLibrary />}
+          </Fab>,
+          <Fab
             key='delete'
             variant='extended'
             color='primary'
@@ -642,6 +668,14 @@ class SelectionPane extends PureComponent {
           {this.props.localization['ADD']}
         </Fab>
       );
+    
+      questions.push(
+        <FormControlLabel
+          key={'fruitingLabel'}
+          control={<Checkbox checked={this.state.fruiting} onChange={() => {this.setState({fruiting: !this.state.fruiting})}} value="fruiting" color='primary' />}
+          label="Fruiting"
+        />
+      );
     }
 
     let elementProperties = element.feature.properties;
@@ -651,25 +685,29 @@ class SelectionPane extends PureComponent {
 
     for (let property in elementProperties) {
 
-      let propertyValue = elementProperties[property];
+      let propertyValue = '';
+      if(property === 'fruiting')
+      {propertyValue = elementProperties[property] ? 'true' : 'false'}
+      else
+      {propertyValue = elementProperties[property]}
 
-      if (element.type === ViewerUtility.drawnPolygonLayerType && property === 'id') {
+      if (element.type === ViewerUtility.drawnPolygonLayerType || property === 'id') {
         continue;
       }
-      if (element.type === ViewerUtility.customPolygonTileLayerType
+      else if (element.type === ViewerUtility.customPolygonTileLayerType
         && property === ViewerUtility.isPrivateProperty) {
         if (propertyValue === true) {
           selectionPaneClass += ' selection-pane-private';
         }
         continue;
       }
-
-      if (elementProperties.hasOwnProperty(property)) {
-        properties.push((
-          <div key={property}>
-            {`${property}: ${propertyValue}`}
-          </div>
-        ))
+      else
+      {
+        properties.push(
+          <li key={property}>
+            <span>{property}:</span> {propertyValue}
+          </li>
+        )
       }
     }
 
@@ -683,7 +721,7 @@ class SelectionPane extends PureComponent {
         color='primary'
         size='small'
         className='selection-pane-button login'
-        href="/login"
+        onClick={() => {this.props.openAccounts(true)}}
       >Please login</Fab>
       
     }
@@ -733,13 +771,17 @@ class SelectionPane extends PureComponent {
             {element.feature.properties.layer === 'districts' ? properties : null}
           </CardContent>
           <CardActions className={'selection-pane-card-actions'}>
-            {/*<div key='first_row_buttons'>
+          {
+            /*<div key='first_row_buttons'>
               {firstRowButtons}
             </div>
             <div key='secont_row_buttons' style={ {marginLeft: '0px' }}>
               {secondRowButtons}
-            </div>*/}
-              {content}
+            </div>*/
+          }
+            <ul className='polygonProperties'>{properties}</ul>
+            {questions}
+            {content}
           </CardActions>
         </Card>
       </div>

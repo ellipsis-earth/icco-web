@@ -31,7 +31,7 @@ div.groups-filter-card-header {
 }
 
 div.geomessage-messages-card {
-  height: calc(100% - 60px);
+  height: 100%;
   overflow-y: auto;
 }
 

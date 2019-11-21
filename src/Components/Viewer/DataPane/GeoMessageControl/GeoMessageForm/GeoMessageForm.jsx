@@ -407,9 +407,9 @@ class GeoMessageForm extends PureComponent {
               >
                 {title}
               </Button> :
-              <div className='geomessage-expanded-title'>
+              /*<div className='geomessage-expanded-title'>
                 {this.props.localization['Add GeoMessage']}
-              </div>
+              </div>*/ null
           }
           action={
             this.state.expanded ?

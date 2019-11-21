@@ -109,3 +109,31 @@ label.FeauxButton span.selection-pane-button
 {
   flex-grow: 1;
 }
+
+.selection-pane label.MuiFormControlLabel-root
+{
+  -webkit-user-select: none;   
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  width: 100%;
+  padding: 0 1em;
+}
+
+.selection-pane .polygonProperties
+{
+  width: 100%;
+  list-style: none;
+  padding-left: 1em;
+}
+
+.selection-pane .polygonProperties li
+{
+  text-align: left;
+}
+
+.selection-pane .polygonProperties li span
+{
+  font-weight: 900;
+  color: #ee7b15;
+}
