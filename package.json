@@ -15,7 +15,7 @@
     "html-react-parser": "^0.6.4",
     "jimp": "^0.6.4",
     "jquery": "^3.4.1",
-    "jquery-ui": "^1.12.1",
+    "jquery-ui": "^1.13.0",
     "js-file-download": "^0.4.7",
     "leaflet": "^1.5.1",
     "leaflet-draw": "^1.0.4",
