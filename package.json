@@ -20,7 +20,7 @@
     "leaflet": "^1.5.1",
     "leaflet-draw": "^1.0.4",
     "lodash.clonedeep": "^4.5.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "papaparse": "^4.6.3",
     "plotly.js": "^1.47.4",
     "react": "^16.8.6",
